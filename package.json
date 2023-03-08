@@ -1,0 +1,22 @@
+{
+  "name": "pok-monproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DenTjorven/Pok-monProject.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DenTjorven/Pok-monProject/issues"
+  },
+  "homepage": "https://github.com/DenTjorven/Pok-monProject#readme",
+  "devDependencies": {
+    "@types/node": "^18.14.6"
+  }
+}
