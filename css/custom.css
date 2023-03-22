@@ -1,0 +1,36 @@
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+@import "../node_modules/bootstrap/scss/functions";
+
+
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/variables-dark";
+@import "../node_modules/bootstrap/scss/maps";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/root";
+
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/type";
+
+body {
+    font-family: 'Nunito', sans-serif;;
+}
+
+.container {
+    width: 100%;
+
+    /* @media (max-width: 1040px) {
+        padding-left: 64px;s
+        padding-right: 64px;
+    } */
+}
+
+header, footer {
+    background-color: #c21721;
+    color: #3e3b3a;
+}
+
+img {
+    height: auto;
+    width: 200px;
+}
