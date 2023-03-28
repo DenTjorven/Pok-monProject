@@ -8,103 +8,111 @@ function Pokemon(name, imgurl, hp, atk, def, spAtk, spDef, spd) {
     this.spDef = spDef;
     this.spd = spd;
 }
-const rawpokemon1 = new Pokemon('bulbasaur','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png',45,49,49,65,65,45);
-const rawpokemon2 = new Pokemon('bulbasaur','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png',39,52,43,60,50,65);
 
 const pokemon1 = {
-    name1: document.getElementById("Naam1"),
-    img1: document.getElementById("Img1"),
-    hp1: document.getElementById("hp1"),
-    atk1: document.getElementById("atk1"),
-    def1: document.getElementById("def1"),
-    spAtk1: document.getElementById("spAtk1"),
-    spDef1: document.getElementById("spDef1"),
-    spd1: document.getElementById("spd1")
+    name: document.getElementById("Naam1"),
+    img: document.getElementById("Img1"),
+    hp: document.getElementById("hp1"),
+    atk: document.getElementById("atk1"),
+    def: document.getElementById("def1"),
+    spAtk: document.getElementById("spAtk1"),
+    spDef: document.getElementById("spDef1"),
+    spd: document.getElementById("spd1")
 };
 //.className = "MyClass";
 const pokemon2 = {
-    name2: document.getElementById("Naam2"),
-    img2: document.getElementById("Img2"),
-    hp2: document.getElementById("hp2"),
-    atk2: document.getElementById("atk2"),
-    def2: document.getElementById("def2"),
-    spAtk2: document.getElementById("spAtk2"),
-    spDef2: document.getElementById("spDef2"),
-    spd2: document.getElementById("spd2")
+    name: document.getElementById("Naam2"),
+    img: document.getElementById("Img2"),
+    hp: document.getElementById("hp2"),
+    atk: document.getElementById("atk2"),
+    def: document.getElementById("def2"),
+    spAtk: document.getElementById("spAtk2"),
+    spDef: document.getElementById("spDef2"),
+    spd: document.getElementById("spd2")
 };
-
+let pokemonJSON = []
 async function DoFetch(id) {
+    let counter = 1;
     let result = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-    let pokemon = await result.json();
-    return pokemon;
+    if (counter === 1){
+        pokemonJSON[0] = await result.json();
+        counter++
+    }else{
+        pokemonJSON[1] = await result.json();
+    }
 }
-DoFetch(1).then(pokemon => {
-    Naam1.textContent = pokemon.name; 
-    Img1.src = pokemon.sprites.other['official-artwork'].front_default;
-    
-})
-DoFetch(4).then(pokemon => {
-    Naam2.textContent = pokemon.name; 
-    Img2.src = pokemon.sprites.other['official-artwork'].front_default;
 
-})
-if(rawpokemon1.hp > rawpokemon2.hp){
-    pokemon1.hp1.className = "more"; pokemon1.hp1.textContent = "HP: " + rawpokemon1.hp;
-    pokemon2.hp2.className = "less"; pokemon2.hp2.textContent = "HP: " + rawpokemon2.hp;
-}else if(rawpokemon1.hp < rawpokemon2.hp){
-    pokemon1.hp1.className = "less"; pokemon1.hp1.textContent = "HP: " + rawpokemon1.hp;
-    pokemon2.hp2.className = "more"; pokemon2.hp2.textContent = "HP: " + rawpokemon2.hp;
-}else{
-    pokemon1.hp1.className = "even"; pokemon1.hp1.textContent = "HP: " + rawpokemon1.hp;
-    pokemon2.hp2.className = "even"; pokemon2.hp2.textContent = "HP: " + rawpokemon2.hp;
+DoFetch(1); //Hardcoded values voor op te vragen ID's
+DoFetch(4);
+
+for (let i = 0; i < pokemonJSON.length; i++) {
+    window['pokemon'+(i+1).name.textContext] = pokemonJSON[i].name;
+    window['pokemon'+(i+1).img.src] = pokemonJSON[i].sprites.other['official-artwork'].front_default;
+    window['pokemon'+(i+1).hp.textContext] = "HP: " + pokemonJSON[i].stats[0].base_stat;
+    window['pokemon'+(i+1).atk.textContext] = "atk: " + pokemonJSON[i].stats[1].base_stat;
+    window['pokemon'+(i+1).def.textContext] = "def: " + pokemonJSON[i].stats[2].base_stat;
+    window['pokemon'+(i+1).spAtk.textContext] = "spAtk: " + pokemonJSON[i].stats[3].base_stat;
+    window['pokemon'+(i+1).spDef.textContext] = "spDef: " + pokemonJSON[i].stats[4].base_stat;
+    window['pokemon'+(i+1).spd.textContext] = "spd: " + pokemonJSON[i].stats[5].base_stat;
 }
-if(rawpokemon1.atk > rawpokemon2.atk){
-    pokemon1.atk1.className = "more"; pokemon1.atk1.textContent = "atk: " + rawpokemon1.atk;
-    pokemon2.atk2.className = "less"; pokemon2.atk2.textContent = "atk: " + rawpokemon2.atk;
-}else if(rawpokemon1.atk < rawpokemon2.atk){
-    pokemon1.atk1.className = "less"; pokemon1.atk1.textContent = "atk: " + rawpokemon1.atk;
-    pokemon2.atk2.className = "more"; pokemon2.atk2.textContent = "atk: " + rawpokemon2.atk;
+
+if(pokemonJSON[0].stats[0].base_stat > pokemonJSON[1].stats[0].base_stat){
+    pokemon1.hp.className = "more";
+    pokemon2.hp.className = "less";
+}else if(pokemonJSON[0].stats[0].base_stat < pokemonJSON[1].stats[0].base_stat){
+    pokemon1.hp.className = "less";
+    pokemon2.hp.className = "more";
 }else{
-    pokemon1.atk1.className = "even"; pokemon1.atk1.textContent = "atk: " + rawpokemon1.atk;
-    pokemon2.atk2.className = "even"; pokemon2.atk2.textContent = "atk: " + rawpokemon2.atk;
+    pokemon1.hp.className = "even";
+    pokemon2.hp.className = "even";
 }
-if(rawpokemon1.def > rawpokemon2.def){
-    pokemon1.def1.className = "more"; pokemon1.def1.textContent = "def: " + rawpokemon1.def;
-    pokemon2.def2.className = "less"; pokemon2.def2.textContent = "def: " + rawpokemon2.def;
-}else if(rawpokemon1.def < rawpokemon2.def){
-    pokemon1.def1.className = "less"; pokemon1.def1.textContent = "def: " + rawpokemon1.def;
-    pokemon2.def2.className = "more"; pokemon2.def2.textContent = "def: " + rawpokemon2.def;
+if(pokemonJSON[0].stats[1].base_stat > pokemonJSON[1].stats[1].base_stat){
+    pokemon1.atk.className = "more";
+    pokemon2.atk.className = "less";
+}else if(pokemonJSON[0].stats[1].base_stat < pokemonJSON[1].stats[1].base_stat){
+    pokemon1.atk.className = "less";
+    pokemon2.atk.className = "more";
 }else{
-    pokemon1.def1.className = "even"; pokemon1.def1.textContent = "def: " + rawpokemon1.def;
-    pokemon2.def2.className = "even"; pokemon2.def2.textContent = "def: " + rawpokemon2.def;
+    pokemon1.atk.className = "even";
+    pokemon2.atk.className = "even";
 }
-if(rawpokemon1.spAtk > rawpokemon2.spAtk){
-    pokemon1.spAtk1.className = "more"; pokemon1.spAtk1.textContent = "spAtk: " + rawpokemon1.spAtk;
-    pokemon2.spAtk2.className = "less"; pokemon2.spAtk2.textContent = "spAtk: " + rawpokemon2.spAtk;
-}else if(rawpokemon1.spAtk < rawpokemon2.spAtk){
-    pokemon1.spAtk1.className = "less"; pokemon1.spAtk1.textContent = "spAtk: " + rawpokemon1.spAtk;
-    pokemon2.spAtk2.className = "more"; pokemon2.spAtk2.textContent = "spAtk: " + rawpokemon2.spAtk;
+if(pokemonJSON[0].stats[2].base_stat > pokemonJSON[1].stats[2].base_stat){
+    pokemon1.def.className = "more";
+    pokemon2.def.className = "less";
+}else if(pokemonJSON[0].stats[2].base_stat < pokemonJSON[1].stats[2].base_stat){
+    pokemon1.def.className = "less";
+    pokemon2.def.className = "more";
 }else{
-    pokemon1.spAtk1.className = "even"; pokemon1.spAtk1.textContent = "spAtk: " + rawpokemon1.spAtk;
-    pokemon2.spAtk2.className = "even"; pokemon2.spAtk2.textContent = "spAtk: " + rawpokemon2.spAtk;
+    pokemon1.def.className = "even";
+    pokemon2.def.className = "even";
 }
-if(rawpokemon1.spDef > rawpokemon2.spDef){
-    pokemon1.spDef1.className = "more"; pokemon1.spDef1.textContent = "spDef: " + rawpokemon1.spDef;
-    pokemon2.spDef2.className = "less"; pokemon2.spDef2.textContent = "spDef: " + rawpokemon2.spDef;
-}else if(rawpokemon1.spDef < rawpokemon2.spDef){
-    pokemon1.spDef1.className = "less"; pokemon1.spDef1.textContent = "spDef: " + rawpokemon1.spDef;
-    pokemon2.spDef2.className = "more"; pokemon2.spDef2.textContent = "spDef: " + rawpokemon2.spDef;
+if(pokemonJSON[0].stats[3].base_stat > pokemonJSON[1].stats[3].base_stat){
+    pokemon1.spAtk.className = "more";
+    pokemon2.spAtk.className = "less";
+}else if(pokemonJSON[0].stats[3].base_stat < pokemonJSON[1].stats[3].base_stat){
+    pokemon1.spAtk.className = "less";
+    pokemon2.spAtk.className = "more";
 }else{
-    pokemon1.spDef1.className = "even"; pokemon1.spDef1.textContent = "spDef: " + rawpokemon1.spDef;
-    pokemon2.spDef2.className = "even"; pokemon2.spDef2.textContent = "spDef: " + rawpokemon2.spDef;
+    pokemon1.spAtk.className = "even";
+    pokemon2.spAtk.className = "even";
 }
-if(rawpokemon1.spd > rawpokemon2.spd){
-    pokemon1.spd1.className = "more"; pokemon1.spd1.textContent = "spd: " + rawpokemon1.spd;
-    pokemon2.spd2.className = "less"; pokemon2.spd2.textContent = "spd: " + rawpokemon2.spd;
-}else if(rawpokemon1.spd < rawpokemon2.spd){
-    pokemon1.spd1.className = "less"; pokemon1.spd1.textContent = "spd: " + rawpokemon1.spd;
-    pokemon2.spd2.className = "more"; pokemon2.spd2.textContent = "spd: " + rawpokemon2.spd;
+if(pokemonJSON[0].stats[4].base_stat > pokemonJSON[1].stats[4].base_stat){
+    pokemon1.spDef.className = "more";
+    pokemon2.spDef.className = "less";
+}else if(pokemonJSON[0].stats[4].base_stat < pokemonJSON[1].stats[4].base_stat){
+    pokemon1.spDef.className = "less";
+    pokemon2.spDef.className = "more";
 }else{
-    pokemon1.spd1.className = "even"; pokemon1.spd1.textContent = "spd: " + rawpokemon1.spd;
-    pokemon2.spd2.className = "even"; pokemon2.spd2.textContent = "spd: " + rawpokemon2.spd;
+    pokemon1.spDef.className = "even";
+    pokemon2.spDef.className = "even";
+}
+if(pokemonJSON[0].stats[5].base_stat > pokemonJSON[1].stats[5].base_stat){
+    pokemon1.spd.className = "more";
+    pokemon2.spd.className = "less";
+}else if(pokemonJSON[0].stats[5].base_stat < pokemonJSON[1].stats[5].base_stat){
+    pokemon1.spd.className = "less";
+    pokemon2.spd.className = "more";
+}else{
+    pokemon1.spd.className = "even";
+    pokemon2.spd.className = "even";
 }

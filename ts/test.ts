@@ -19,7 +19,7 @@ const pokemon2:Pokemon = {
 const doFetch = async ():Promise<void> =>{
     let result:any = await fetcher(`https://pokeapi.co/api/v2/pokemon/1`);
     let response:any = await result.json();
-    //console.log(response);
+    console.log(response);
 }
 doFetch();
 let stats1:string = "";
