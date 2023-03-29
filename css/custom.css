@@ -1,0 +1,77 @@
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+@import "../node_modules/bootstrap/scss/functions";
+
+
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/variables-dark";
+@import "../node_modules/bootstrap/scss/maps";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/root";
+
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/type";
+
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
+
+body {
+    font-family: 'Nunito', sans-serif;;
+}
+
+.container {
+    width: 100%;
+}
+
+main {
+    padding: 70px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+
+header, footer {
+    text-align: center;
+    font-size: 20px;
+    padding: 10px;
+    background-color: #c21721;
+    color: #ffff;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+img {
+    height: auto;
+    width: 200px;
+}
+
+a, span {
+    color: #EED17C;
+    
+}
+
+a:hover {
+    color: #eba865;
+    text-decoration: none;
+}
+
+hr {
+    border-top: 3px, double;
+}
+
+.more {
+    color: green;
+}
+.less {
+    color: red;
+}
+.even {
+    color: black;
+}
