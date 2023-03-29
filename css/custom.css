@@ -12,22 +12,38 @@
 @import "../node_modules/bootstrap/scss/reboot";
 @import "../node_modules/bootstrap/scss/type";
 
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
+
 body {
     font-family: 'Nunito', sans-serif;;
 }
 
 .container {
     width: 100%;
+}
 
-    /* @media (max-width: 1040px) {
-        padding-left: 64px;s
-        padding-right: 64px;
-    } */
+main {
+    padding: 70px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
 }
 
 header, footer {
+    text-align: center;
+    font-size: 20px;
+    padding: 10px;
     background-color: #c21721;
     color: #3e3b3a;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
 }
 
 img {
