@@ -1,118 +1,87 @@
-function Pokemon(name, imgurl, hp, atk, def, spAtk, spDef, spd) {
-    this.name = name;
-    this.imgurl = imgurl;
-    this.hp = hp;
-    this.atk = atk;
-    this.def = def;
-    this.spAtk = spAtk;
-    this.spDef = spDef;
-    this.spd = spd;
-}
-
-const pokemon1 = {
-    name: document.getElementById("Naam1"),
-    img: document.getElementById("Img1"),
-    hp: document.getElementById("hp1"),
-    atk: document.getElementById("atk1"),
-    def: document.getElementById("def1"),
-    spAtk: document.getElementById("spAtk1"),
-    spDef: document.getElementById("spDef1"),
-    spd: document.getElementById("spd1")
-};
-//.className = "MyClass";
-const pokemon2 = {
-    name: document.getElementById("Naam2"),
-    img: document.getElementById("Img2"),
-    hp: document.getElementById("hp2"),
-    atk: document.getElementById("atk2"),
-    def: document.getElementById("def2"),
-    spAtk: document.getElementById("spAtk2"),
-    spDef: document.getElementById("spDef2"),
-    spd: document.getElementById("spd2")
-};
-let pokemonJSON = []
-async function DoFetch(id) {
-    let counter = 1;
-    let result = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-    if (counter === 1){
-        pokemonJSON[0] = await result.json();
-        counter++
-    }else{
-        pokemonJSON[1] = await result.json();
+/**
+ * Returns an object containing DOM elements for a Pokemon's name, image, and stats
+ *
+ * @param {number} id - The ID of the Pokemon
+ * @returns {Object} An object containing the DOM elements for the Pokemon's name, image, and stats
+ */
+const getPokemon = (id) => ({
+    name: document.getElementById(`Naam${id}`),
+    img: document.getElementById(`Img${id}`),
+    hp: document.getElementById(`hp${id}`),
+    atk: document.getElementById(`atk${id}`),
+    def: document.getElementById(`def${id}`),
+    spAtk: document.getElementById(`spAtk${id}`),
+    spDef: document.getElementById(`spDef${id}`),
+    spd: document.getElementById(`spd${id}`)
+  });
+  
+/**
+ * Fetches Pokemon data from the PokeAPI and updates the DOM elements for the given Pokemon
+ *
+ * @param {number} id - The ID of the Pokemon to fetch
+ * @param {Object} pokemon - An object containing the DOM elements for the Pokemon's name, image, and stats
+ */
+  const fetchPokemon = async (id, pokemon) => {
+    const result = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+    const pokemonData = await result.json();
+    
+    pokemon.name.textContent = pokemonData.name;
+    pokemon.img.src = pokemonData.sprites.other["official-artwork"].front_default;
+    pokemon.hp.textContent = pokemonData.stats[0].base_stat;
+    pokemon.atk.textContent = pokemonData.stats[1].base_stat;
+    pokemon.def.textContent = pokemonData.stats[2].base_stat;
+    pokemon.spAtk.textContent = pokemonData.stats[3].base_stat;
+    pokemon.spDef.textContent = pokemonData.stats[4].base_stat;
+    pokemon.spd.textContent = pokemonData.stats[5].base_stat;
+  };
+  
+/**
+ * Compares the stats of two Pokemon and updates the classes of the corresponding DOM elements
+ *
+ * @param {string} stat - The name of the stat to compare (hp, atk, def, spAtk, spDef, or spd)
+ * @param {number} id1 - The ID of the first Pokemon
+ * @param {number} id2 - The ID of the second Pokemon
+ */
+  const compareStats = async (stat, id1, id2) => {
+    const elem1 = document.getElementById(`${stat}${id1}`);
+    const elem2 = document.getElementById(`${stat}${id2}`);
+    console.log(stat);
+    console.log(elem1.innerText);
+    console.log(elem2.innerText);
+    if (elem1.innerText > elem2.innerText) {
+      elem1.className = "more";
+      elem2.className = "less";
+    } else if (elem1.innerText < elem2.innerText) {
+      elem1.className = "less";
+      elem2.className = "more";
+    } else {
+      elem1.className = "even";
+      elem2.className = "even";
     }
-}
-
-DoFetch(1); //Hardcoded values voor op te vragen ID's
-DoFetch(4);
-
-for (let i = 0; i < pokemonJSON.length; i++) {
-    window['pokemon'+(i+1).name.textContext] = pokemonJSON[i].name;
-    window['pokemon'+(i+1).img.src] = pokemonJSON[i].sprites.other['official-artwork'].front_default;
-    window['pokemon'+(i+1).hp.textContext] = "HP: " + pokemonJSON[i].stats[0].base_stat;
-    window['pokemon'+(i+1).atk.textContext] = "atk: " + pokemonJSON[i].stats[1].base_stat;
-    window['pokemon'+(i+1).def.textContext] = "def: " + pokemonJSON[i].stats[2].base_stat;
-    window['pokemon'+(i+1).spAtk.textContext] = "spAtk: " + pokemonJSON[i].stats[3].base_stat;
-    window['pokemon'+(i+1).spDef.textContext] = "spDef: " + pokemonJSON[i].stats[4].base_stat;
-    window['pokemon'+(i+1).spd.textContext] = "spd: " + pokemonJSON[i].stats[5].base_stat;
-}
-
-if(pokemonJSON[0].stats[0].base_stat > pokemonJSON[1].stats[0].base_stat){
-    pokemon1.hp.className = "more";
-    pokemon2.hp.className = "less";
-}else if(pokemonJSON[0].stats[0].base_stat < pokemonJSON[1].stats[0].base_stat){
-    pokemon1.hp.className = "less";
-    pokemon2.hp.className = "more";
-}else{
-    pokemon1.hp.className = "even";
-    pokemon2.hp.className = "even";
-}
-if(pokemonJSON[0].stats[1].base_stat > pokemonJSON[1].stats[1].base_stat){
-    pokemon1.atk.className = "more";
-    pokemon2.atk.className = "less";
-}else if(pokemonJSON[0].stats[1].base_stat < pokemonJSON[1].stats[1].base_stat){
-    pokemon1.atk.className = "less";
-    pokemon2.atk.className = "more";
-}else{
-    pokemon1.atk.className = "even";
-    pokemon2.atk.className = "even";
-}
-if(pokemonJSON[0].stats[2].base_stat > pokemonJSON[1].stats[2].base_stat){
-    pokemon1.def.className = "more";
-    pokemon2.def.className = "less";
-}else if(pokemonJSON[0].stats[2].base_stat < pokemonJSON[1].stats[2].base_stat){
-    pokemon1.def.className = "less";
-    pokemon2.def.className = "more";
-}else{
-    pokemon1.def.className = "even";
-    pokemon2.def.className = "even";
-}
-if(pokemonJSON[0].stats[3].base_stat > pokemonJSON[1].stats[3].base_stat){
-    pokemon1.spAtk.className = "more";
-    pokemon2.spAtk.className = "less";
-}else if(pokemonJSON[0].stats[3].base_stat < pokemonJSON[1].stats[3].base_stat){
-    pokemon1.spAtk.className = "less";
-    pokemon2.spAtk.className = "more";
-}else{
-    pokemon1.spAtk.className = "even";
-    pokemon2.spAtk.className = "even";
-}
-if(pokemonJSON[0].stats[4].base_stat > pokemonJSON[1].stats[4].base_stat){
-    pokemon1.spDef.className = "more";
-    pokemon2.spDef.className = "less";
-}else if(pokemonJSON[0].stats[4].base_stat < pokemonJSON[1].stats[4].base_stat){
-    pokemon1.spDef.className = "less";
-    pokemon2.spDef.className = "more";
-}else{
-    pokemon1.spDef.className = "even";
-    pokemon2.spDef.className = "even";
-}
-if(pokemonJSON[0].stats[5].base_stat > pokemonJSON[1].stats[5].base_stat){
-    pokemon1.spd.className = "more";
-    pokemon2.spd.className = "less";
-}else if(pokemonJSON[0].stats[5].base_stat < pokemonJSON[1].stats[5].base_stat){
-    pokemon1.spd.className = "less";
-    pokemon2.spd.className = "more";
-}else{
-    pokemon1.spd.className = "even";
-    pokemon2.spd.className = "even";
-}
+  };
+  
+/**
+ * Compares the stats of two Pokemon
+ *
+ * @param {number} id1 - The ID of the first Pokemon
+ * @param {number} id2 - The ID of the second Pokemon
+ */
+  const comparePokemon = (id1, id2) => {
+    compareStats("hp", id1, id2);
+    console.log(id1);
+    console.log(document.getElementById('hp1').innerText)
+    console.log(id2);
+    compareStats("atk", id1, id2);
+    compareStats("def", id1, id2);
+    compareStats("spAtk", id1, id2);
+    compareStats("spDef", id1, id2);
+    compareStats("spd", id1, id2);
+  };
+  
+  const pokemon1 = getPokemon(1);
+  const pokemon2 = getPokemon(2);
+  
+  fetchPokemon(1, pokemon1);
+  fetchPokemon(4, pokemon2);
+  comparePokemon(1, 2);
+  console.log(document.getElementById('hp1').textContent);
