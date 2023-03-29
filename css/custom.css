@@ -38,6 +38,7 @@ img {
 }
 
 a, span {
+    text-decoration: none;
     color: #EED17C;
     
 }
