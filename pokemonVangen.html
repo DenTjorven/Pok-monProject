@@ -5,8 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="./js/Vergelijken.js" defer></script>
-    <link rel="stylesheet" href="css/nav.css">
-    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/nav&footer.css">
+    <link rel="stylesheet" href="/css/pokémonVangen.css">
     <title>pokemon_vangen</title>
 </head>
 <body>
@@ -37,21 +40,37 @@
                 <li><a href="/pokemonVangen.html">Catch-Em-All!</a></li>
                 <li><a href="#">Pokédex...</a></li>
                 <li><a href="#">Who's That Pokémon?</a></li>    
-        </header>
-    <section>
-        <h1 class="text-center"> Naam van de pokemon</h1>
-        <img src="/assets/images/logos/pokemon.jpg" ></a>
-        <button id="catch-button">Vangen</button>
-        <select id="dropdown-1">
-            <option value="red">Red</option>
-            <option value="green">Green</option>
-            <option value="blue">Blue</option>
-            <option value="yellow">Yellow</option>
-          </select>
+</header>
+<main>
+  <label for="pokemon-name">You Found!</label>
+    <h1 id="pokemon-name">Naam van de Pokémon</h1>
+    <img id="pokemon-image" src="/assets/images/assets_Register_Login/charmender.png" alt="Image of the Pokemon" />
+    <section id="poke-catch">
+      <button id="catch-button"></button>
+      <button id="Chose_Your_Pokemon_Dropdown">
+        <label for="Chose_Your_Pokemon_Dropdown"> Chose Your Pokémon</label>
+      <select name="Chose_Your_Pokemon" id="yourePokemon">
+        <option value="red">red</option>
+        <option value="blue">blue</option>
+      </select>
+    </button>
     </section>
-    <footer>
-        <h4>Ap Hogeschool It Project Pokémon</h4>
-        <h5>Tjörven <br> William <br> Kirolos <br> Lina <br> Olivier</h5>
-    </footer>
+</main>
+  <footer>
+    <div class="footer-content">
+      <img src="/assets/images/logo_navbar/Pikachu-dex.webp" alt="" class="footer-logo">
+      <div class="footer-info">
+        <h4>Ap Hogeschool IT Project</h4>
+        <p>Project Leden:</p>
+        <ul>
+          <li>Tjörven</li>
+          <li>William</li>
+          <li>Kirolos</li>
+          <li>Lina</li>
+          <li>Olivier</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
