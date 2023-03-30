@@ -10,7 +10,7 @@ header,footer{
     padding: 10px;
     background-color: #c21721;
     color: #ffff;
-    font-family: monospace
+    font-family: monospace;
 }
 /* BEGIN CSS NavBar Peek At You ! (william jolivet) */
 
@@ -110,8 +110,10 @@ header,footer{
 .navbar .menu-items {
   font-family: monospace;
   padding-top: 120px;
-  box-shadow: inset 0 0 2000px rgba(245, 170, 9, 1)
-  ;
+  background-color: rgba(245, 222, 179, 0.97);
+  box-shadow: inset 0 0 2000px rgba(245, 170, 9, 1);
+  border-radius: 3% 3% 50% 0%;
+  border: rgba(0, 0, 0, 0.743) solid 3px;
   height: 100vh;
   width: 100%;
   transform: translate(-150%);
@@ -141,6 +143,7 @@ header,footer{
   transition: 0.8s ease-out;
 
 }
+
 .nav-container input[type="checkbox"]:checked ~ .menu-items {
   transform: translateX(0);
 }
