@@ -164,3 +164,51 @@ header,footer{
   display: none;
 }
 /* EINDE CSS NavBar Peek At You ! (william jolivet) */
+
+
+/* BEGIN CSS Footer PEEK At You ! (william jolivet) */
+footer {
+  background-color: #c21721;
+  color: #0e2431;
+  font-family: monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+}
+
+.footer-logo {
+  width: 100px;
+  height: auto;
+  margin-right: 30px;
+}
+
+.footer-info h4 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.footer-info p {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  color: #F5AA09;
+}
+
+.footer-info ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-info li {
+  font-size: 1.2rem;
+  color: wheat;
+}
+/* EINDE CSS Footer PEEK At You ! (william jolivet) */
+
+
