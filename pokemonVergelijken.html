@@ -8,41 +8,88 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="./js/Vergelijken.js" defer></script>
-    <link rel="stylesheet" href="./css/stylesheet.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/vergekijkPokémon.css">
+    
     <title>PokemonVergelijken</title>
 </head>
 <body>
-    <nav>
-        menu placeholders
-    </nav>
+    <header>
+        <nav>
+            <div class="navbar">
+              <h1 style="color: wheat;">Pokémon</h1>
+              <div class="container nav-container">
+                  <input class="checkbox" type="checkbox" name="" id="" />
+                  <div class="hamburger-lines">
+                    <span class="line line1"></span>
+                    <span class="line line2"></span>
+                    <span class="line line3"></span>
+                    
+                  </div>  
+                <div class="logo">
+                  <a href="/registration.html"><img src="assets/images/logo_navbar/Pikachu-dex.webp" alt style="width: 50px; height:auto;"></a>
+                  <a href="/registration.html"><h2>Peek At Us! </h2></a>
+                </div>
+                <div class="menu-items">
+                  <li><h2 style="color:#8F004A;">Welcome to Peek-At-You !</h2></li>
+                  <li><img src="assets/images/logo_navbar/Screenshot 2023-03-29 at 17.14.22.png" alt=""></li>
+                  <li><a href="#">Home</a></li>
+                  <li><a href="/login.html">Login</a></li>
+                  <li><a href="/registration.html">Registration</a></li>
+                  <li><a href="/pokemonVergelijken.html">PokéPare</a></li>
+                  <li><a href="#">Battler!</a></li>
+                  <li><a href="#">Catch-Em-All!</a></li>
+                  <li><a href="#">Pokédex...</a></li>
+                  <li><a href="#">Who's That Pokémon?</a></li>    
+    </header>
     <main>
-        <article id="pkmn1">
+        <h1>Welcome To PokéPair!</h1>
+        <br>
+        <h2>A Quick Way to Comapare Youre Pokémon</h2>
+        <section id="pkmn1">
             <h2 id="Naam1">Pokémon 1 Naam placeholder</h2>
             <a href="#">
             <img id="Img1" src="" class="img-responsive"></a>
-            <section id="Stats1">Stats Pkmn1:
-                <p>HP: <a id="hp1"></a></p>
-                <p>Atk: <a id="atk1"></a></p>
-                <p>Def: <a id="def1"></a></p>
-                <p>spAtk: <a id="spAtk1"></a></p>
-                <p>spDef: <a id="spDef1"></a></p>
-                <p>Spd: <a id="spd1"></a></p>
-            </section>
-        </article>
-        <article id="pkmn2">
+            <article id="Stats1">Stats Of Your Pokemon:
+              <p id="hp1"></p>
+              <p id="atk1"></p>
+              <p id="def1"></p>
+              <p id="spAtk1"></p>
+              <p id="spDef1"></p>
+              <p id="spd1"></p>
+              <label for="dropdown-1">Chose One Of Youre Pokémon</label>
+              <select id="dropdown-1">
+                <option value="red">Red</option>
+                <option value="green">Green</option>
+                <option value="blue">Blue</option>
+                <option value="yellow">Yellow</option>
+              </select>
+              
+              
+            </article>
+          </section>
+          <section id="pkmn2">
             <h2 id="Naam2">Pokémon 2 Naam placeholder</h2>
             <a href="#">
             <img id="Img2" src="" class="img-responsive"></a>
-            <section id="Stats2">Stats Pkmn2:
-                <p>HP: <a id="hp2"></a></p>
-                <p>Atk: <a id="atk2"></a></p>
-                <p>Def: <a id="def2"></a></p>
-                <p>spAtk: <a id="spAtk2"></a></p>
-                <p>spDef: <a id="spDef2"></a></p>
-                <p>Spd: <a id="spd2"></a></p>
-            </section>
-        </article>
-    </main>
+            <article id="Stats2">Stats Pokémon:
+              <p id="hp2"></p>
+              <p id="atk2"></p>
+              <p id="def2"></p>
+              <p id="spAtk2"></p>
+              <p id="spDef2"></p>
+              <p id="spd2"></p>   
+              <label for="dropdown-2">Choose Pokémon:</label>
+            <select id="dropdown-2">
+                <option value="red">Red</option>
+                <option value="green">Green</option>
+                <option value="blue">Blue</option>
+                <option value="yellow">Yellow</option>
+            </select>
+     
+            </article>
+          </section>
+        </main>
     <footer>
         placeholder footer
     </footer>
