@@ -1,9 +1,21 @@
 .more {
-    color: green;
+    color: green !important;
 }
+
 .less {
-    color: red;
+    color: red !important;
 }
+
 .even {
-    color: black;
+    color: black !important;
+}
+
+body {
+    padding: 10px;
+    font-size: large;
+}
+
+img {
+    height: 10%;
+    width: 10%;
 }
