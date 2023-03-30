@@ -1,73 +1,75 @@
-
 body {
-    background-image: url(/assets/images/extra_fotos/Pokemon-forest-by-BlazingIfrit-Fur-Affinity-dot-net.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    font-family: monospace;
-    color: #F5AA09;
-    text-align: center;
-    margin: 0;
-  }
+  background-image: url(/assets/images/extra_fotos/Pokemon-forest-by-BlazingIfrit-Fur-Affinity-dot-net.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  font-family: monospace;
+  color: #F5AA09;
+  text-align: center;
+  margin: 0;
+}
 
 #catch-button {
-    background-image: url(/assets/images/logos/pokemon.jpg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-    border: solid black 1px;
-    width: 20em;
-    height: 20em;
-    cursor: pointer;
-    position: relative;
-    margin-top: -4em;
-    margin-bottom: 15em;
-    z-index: 2;
-    transform: translateY(50%);
-    bottom: -4em;
-    transition: all 0.3s ease;
-    border-radius: 50%;
-    overflow: hidden;
-  }
-  #poke-catch{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  #pokemon-name {
-    font-size: 2.5em;
-    margin-top: 2em;
-    background-color: rgba(128, 128, 128, 0.774);
-    border: rgb(21, 20, 20) 3px double; 
-  }
-  #pokemon-image {
-    margin-top: 2em; 
-    z-index: 2;
-  }  
-  #catch-button:hover {
-    transform: scale(1.1);
-  }
-  label{
-    background-color: #8F004A;
-    border: 3px double gray;
-    border-radius: 10%;
-    margin: 2rem;
-    padding: 10px;
-    color: #F5AA09;
-  }
- #Chose_Your_Pokemon_Dropdown{
- color:#8F004A;
- background-color: wheat;
- border: double 3px ;
- align-items: end;
- justify-content: flex-end;
- }
-#poke-catch {
-    display: flex;
-    
-    justify-content: center;
-  }
-#Chose_Your_Pokemon_Dropdown {
-    display: inline-block;
-  }
+  background-image: url(/assets/images/logos/pokemon.jpg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  border: solid black 1px;
+  width: 20em;
+  height: 20em;
+  cursor: pointer;
+  position: relative;
+  margin-top: -4em;
+  margin-bottom: 15em;
+  z-index: 2;
+  transform: translateY(50%);
+  bottom: -4em;
+  transition: all 0.3s ease;
+  border-radius: 50%;
+  overflow: hidden;
+}
+#poke-catch{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#pokemon-name {
+  font-size: 2.5em;
+  margin-top: 2em;
+  background-color: rgba(128, 128, 128, 0.774);
+  border: rgb(21, 20, 20) 3px double; 
+}
+#pokemon-image {
+  margin-top: 2em; 
+  z-index: 2;
+}
+#catch-button:hover {
+  transform: scale(1.1);
 
+}
+#catch-button:active {
+  opacity: 0.7;
+}
+label{
+  background-color: #8F004A;
+  border: 3px double gray;
+  border-radius: 10%;
+  margin: 2rem;
+  padding: 10px;
+  color: #F5AA09;
+}
+#Chose_Your_Pokemon_Dropdown{
+color:#8F004A;
+background-color: wheat;
+border: double 3px ;
+align-items: end;
+justify-content: flex-end;
+}
+#poke-catch {
+  display: flex;
+
+  justify-content: center;
+}
+#Chose_Your_Pokemon_Dropdown {
+  display: inline-block;
+}

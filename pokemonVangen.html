@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="./js/Vangen.js" defer></script>
     <link rel="stylesheet" href="css/nav&footer.css">
     <link rel="stylesheet" href="/css/pokémonVangen.css">
     <title>pokemon_vangen</title>
@@ -42,16 +43,14 @@
                 <li><a href="#">Who's That Pokémon?</a></li>    
 </header>
 <main>
-  <label for="pokemon-name">You Found!</label>
+  <label id="pokemon-name-label"for="pokemon-name"></label>
     <h1 id="pokemon-name">Naam van de Pokémon</h1>
-    <img id="pokemon-image" src="/assets/images/assets_Register_Login/charmender.png" alt="Image of the Pokemon" />
+    <img id="pokemon-image" src="" alt="Image of the Pokemon" />
     <section id="poke-catch">
       <button id="catch-button"></button>
       <button id="Chose_Your_Pokemon_Dropdown">
         <label for="Chose_Your_Pokemon_Dropdown"> Chose Your Pokémon</label>
-      <select name="Chose_Your_Pokemon" id="yourePokemon">
-        <option value="red">red</option>
-        <option value="blue">blue</option>
+      <select name="Chose_Your_Pokemon" id="yourPokemon">
       </select>
     </button>
     </section>
