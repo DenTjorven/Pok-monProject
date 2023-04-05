@@ -40,7 +40,6 @@ img {
 a, span {
     text-decoration: none;
     color: #EED17C;
-    
 }
 
 a:hover {
@@ -48,10 +47,10 @@ a:hover {
     text-decoration: none;
 }
 
+
 p {
     font-size: 20px;
 }
-
 hr {
     border-top: 3px, double;
 }

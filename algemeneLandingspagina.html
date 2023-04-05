@@ -9,54 +9,94 @@
     <link rel="stylesheet" href="./css/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/nav&footer.css">
     <title>Algemene landingspagina</title>
-
 </head>
 <body>
+    <header>
+        <nav>
+          <div class="navbar">
+            <h1 style="color: wheat;">IT PROJECT</h1>
+        </header>
     <main class="container-fluid">
         <section class="col-sm-3 col-md-6 col-lg-4">
             <a href="#">
-                <input type="image" class="btn btn-primary" src="./assets/images/logos/fifa.jpg" width="400" height="400"></button>
+                <input type="image" class="btn btn-primary" data-toggle="modal" data-target="#myModal" src="./assets/images/logos/fifa.jpg" width="400" height="400"></button>
                 <!-- <img src="./assets/images/logos/fifa.jpg" class="img-thumbnail" width="400" height="400"> -->
             </a>
         </section>
         <section class="col-sm-3 col-md-6 col-lg-4">
             <a href="#">
-                <input type="image" class="btn btn-primary" src="./assets/images/logos/fortnite.jpg" width="400" height="400"></button>
+                <input type="image" class="btn btn-primary" data-toggle="modal" data-target="#myModal" src="./assets/images/logos/fortnite.jpg" width="400" height="400"></button>
                 <!-- <img src="./assets/images/logos/fortnite.jpg" class="img-thumbnail" width="400" height="400"> -->
             </a>
         </section>
         <section class="col-sm-3 col-md-6 col-lg-4">
             <a href="#">
-                <input type="image" class="btn btn-primary" src="./assets/images/logos/lego-masters.jpg" width="400" height="400"></button>
+                <input type="image" class="btn btn-primary" data-toggle="modal" data-target="#myModal" src="./assets/images/logos/lego-masters.jpg" width="400" height="400"></button>
                 <!-- <img src="./assets/images/logos/lego-masters.jpg" class="img-thumbnail" width="400" height="400"> -->
             </a>
         </section>
         <section class="col-sm-3 col-md-6 col-lg-4">
             <a href="#">
-                <input type="image" class="btn btn-primary" src="./assets/images/logos/lotr.png" width="400" height="400"></button>
+                <input type="image" class="btn btn-primary" data-toggle="modal" data-target="#myModal" src="./assets/images/logos/lotr.png" width="400" height="400"></button>
                 <!-- <img src="./assets/images/logos/lotr.png" class="img-thumbnail" width="400" height="400"> -->
             </a>
         </section>
         <section class="col-sm-3 col-md-6 col-lg-4">
             <a href="#">
-                <input type="image" class="btn btn-primary" src="./assets/images/logos/mtg.jpg" width="400" height="400"></button>
+                <input type="image" class="btn btn-primary" data-toggle="modal" data-target="#myModal" src="./assets/images/logos/mtg.jpg" width="400" height="400"></button>
                 <!-- <img src="./assets/images/logos/mtg.jpg" class="img-thumbnail" width="400" height="400"> -->
             </a>
         </section>
         <section class="col-sm-3 col-md-6 col-lg-4">
             <a href="#">
-                <input type="image" class="btn btn-primary" src="./assets/images/logos/nbb.jpg" width="400" height="400"></button>
+                <input type="image" class="btn btn-primary" data-toggle="modal" data-target="#myModal" src="./assets/images/logos/nbb.jpg" width="400" height="400"></button>
                 <!-- <img src="./assets/images/logos/nbb.jpg" class="img-thumbnail" width="400" height="400"> -->
             </a>
         </section>
         <section class="col-sm-3 col-md-6 col-lg-4">
-            <a href="#">
+            <a href="/login.html">
                 <input type="image" class="btn btn-primary" src="./assets/images/logos/pokemon.jpg" width="400" height="400"></button>
                 <!-- <img src="./assets/images/logos/pokemon.jpg" class="img-thumbnail" width="400" height="400"> -->
             </a>
         </section>
-    </main>
+          <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
     
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Niet geauthoriseed</h4>
+        </div>
+        <div class="modal-body">
+          <p>Je kan hier niet aan deelnemen.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+    </main>
+    <footer>
+        <div class="footer-content">
+          <img src="/assets/images/logo_navbar/Pikachu-dex.webp" alt="" class="footer-logo">
+          <div class="footer-info">
+            <h4>Ap Hogeschool IT Project</h4>
+            <p>Project Leden:</p>
+            <ul>
+              <li>Tjörven</li>
+              <li>William</li>
+              <li>Kirolos</li>
+              <li>Lina</li>
+              <li>Olivier</li>
+            </ul>
+          </div>
+        </div>
+      </footer>      
 </body>
 </html>
