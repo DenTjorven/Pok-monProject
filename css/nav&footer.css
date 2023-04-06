@@ -212,9 +212,5 @@ footer {
 /* EINDE CSS Footer PEEK At You ! (william jolivet) */
 
 
-@media screen and (min-width: 1200px) {
-  .nav-container .checkbox,
-  .nav-container .hamburger-lines {
-    display: none;
-  }
-}
+
+
