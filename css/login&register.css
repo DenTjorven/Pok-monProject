@@ -28,6 +28,8 @@ h1 {
     border-radius: 10px;
     background-color: rgba(240, 248, 255, 0.723);
     box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    border-image:url(/assets/images/logos/poké-catch-ball.png);
+    border-image-width:15px;
   }
   
   label {
