@@ -46,6 +46,8 @@ article {
     border-style:double;
     color: #8F004A;
     border-radius: 2%;
+    border-image:url(/assets/images/logos/poké-catch-ball.png);
+    border-image-width:15px;
 }
 
 
