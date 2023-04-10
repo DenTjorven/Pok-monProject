@@ -77,3 +77,6 @@ body {
 #Chose_Your_Pokemon_Dropdown {
   display: inline-block;
 }
+#label-nickname,#nickname-input,#nickname-button{
+  display: none;
+}

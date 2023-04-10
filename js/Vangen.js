@@ -1,5 +1,3 @@
-
-
 const staticPKMNURLArray = ["https://pokeapi.co/api/v2/pokemon/1","https://pokeapi.co/api/v2/pokemon/4","https://pokeapi.co/api/v2/pokemon/7"]
 const staticPKMNNAMEArray = ["bulbasaur","charmander","squirtle"];
 const staticPKMNATKArray = [49,52,48]
@@ -9,6 +7,7 @@ const dropdown = document.getElementById('yourPokemon');
 const catchButton = document.getElementById('catch-button');
 const chanceLabel = document.getElementById('pokemon-name-label');
 const catchImg = document.getElementById(`pokemon-image`);
+const nics = document.getElementsByClassName('nickname');
 const genRandom = async () => {
     randomID = Math.floor(Math.random() * 1010);
     loadData(randomID)
@@ -31,29 +30,44 @@ async function loadData(id) {
     catchImg.src = pokemon.sprites.other["official-artwork"].front_default;
     return pokemon.stats[3].base_stat;
 }
+const nickname = new Promise((resolve) => {
+    const button = document.getElementById("nickname-form");
+    button.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const nicknameInput = document.getElementById("nickname-input");
+      const nickname = nicknameInput.value;
+      //code set nickname based on input
+      for (let i = 0; i < nics.length; i++) {
+        nics[i].style.display = "none";
+      }   
+      resolve(true);
+      genRandom();
+    });
+  });
+  
 catchButton.addEventListener('click', async function(){
     const randomProcent = Math.floor(Math.random() * 98);
-    if(chanceCounter === 0){
-        chanceCounter = 3;
-        genRandom();
-    } else {
-        const yourIndex = dropdown.selectedIndex;
+    const yourIndex = dropdown.selectedIndex;
         const def = await loadData(randomID);
         let check = 60-def+staticPKMNATKArray[yourIndex]
         if(check > 100){
             check = 100
         }
-        console.log(60-def+staticPKMNATKArray[yourIndex])
-        console.log("to beat:" + randomProcent)
-        if(check > randomProcent){
-            chanceCounter = 3;
-            genRandom();
-            chanceLabel.textContent = "SUCCES, POKEMON GEVANGEN"
-            //Code to add to dropdown + database of caught pokemon
-        }else {
-            chanceCounter--
-            chanceLabel.textContent = "Chances left: " + chanceCounter
+        //console.log(60-def+staticPKMNATKArray[yourIndex])
+        //console.log("to beat:" + randomProcent)
+    if(chanceCounter === 1 && check <= randomProcent){
+        chanceCounter = 3;
+        genRandom();
+    } else if(check > randomProcent){
+        chanceCounter = 3;
+        chanceLabel.textContent = "SUCCES, POKEMON GEVANGEN"
+        for (let i = 0; i < nics.length; i++) {
+            nics[i].style.display = "inline-block";
         }
+        await nickname;
+    }else{
+        chanceCounter--
+        chanceLabel.textContent = "Chances left: " + chanceCounter
     }
 });
 catchImg.addEventListener('click', function() {
