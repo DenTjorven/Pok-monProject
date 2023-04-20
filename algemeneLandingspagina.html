@@ -4,83 +4,62 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./css/reset.css">
-    <link rel="stylesheet" href="./css/style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="./js/modal.js" defer></script>
     <link rel="stylesheet" href="css/nav&footer.css">
+    <link rel="stylesheet" href="css/algemeneLandingspagina.css">
     <title>Algemene landingspagina</title>
 </head>
 <body>
-    <header>
-        <nav>
-          <div class="navbar">
-            <h1 style="color: wheat;">IT PROJECT</h1>
-        </header>
+  <header>
+    <h1 style="color: #F5AA09;">IT Project</h1>
+    <nav>              
+            <li><a href="/login.html">Login</a></li>
+            <li><a href="/registration.html">Registration</a></li>  
+    </nav>
+    </header>
     <main class="container-fluid">
-        <section class="col-sm-3 col-md-6 col-lg-4">
-            <a href="#">
-                <input type="image" class="btn btn-primary" data-toggle="modal" data-target="#myModal" src="./assets/images/logos/fifa.jpg" width="400" height="400"></button>
-                <!-- <img src="./assets/images/logos/fifa.jpg" class="img-thumbnail" width="400" height="400"> -->
-            </a>
-        </section>
-        <section class="col-sm-3 col-md-6 col-lg-4">
-            <a href="#">
-                <input type="image" class="btn btn-primary" data-toggle="modal" data-target="#myModal" src="./assets/images/logos/fortnite.jpg" width="400" height="400"></button>
-                <!-- <img src="./assets/images/logos/fortnite.jpg" class="img-thumbnail" width="400" height="400"> -->
-            </a>
-        </section>
-        <section class="col-sm-3 col-md-6 col-lg-4">
-            <a href="#">
-                <input type="image" class="btn btn-primary" data-toggle="modal" data-target="#myModal" src="./assets/images/logos/lego-masters.jpg" width="400" height="400"></button>
-                <!-- <img src="./assets/images/logos/lego-masters.jpg" class="img-thumbnail" width="400" height="400"> -->
-            </a>
-        </section>
-        <section class="col-sm-3 col-md-6 col-lg-4">
-            <a href="#">
-                <input type="image" class="btn btn-primary" data-toggle="modal" data-target="#myModal" src="./assets/images/logos/lotr.png" width="400" height="400"></button>
-                <!-- <img src="./assets/images/logos/lotr.png" class="img-thumbnail" width="400" height="400"> -->
-            </a>
-        </section>
-        <section class="col-sm-3 col-md-6 col-lg-4">
-            <a href="#">
-                <input type="image" class="btn btn-primary" data-toggle="modal" data-target="#myModal" src="./assets/images/logos/mtg.jpg" width="400" height="400"></button>
-                <!-- <img src="./assets/images/logos/mtg.jpg" class="img-thumbnail" width="400" height="400"> -->
-            </a>
-        </section>
-        <section class="col-sm-3 col-md-6 col-lg-4">
-            <a href="#">
-                <input type="image" class="btn btn-primary" data-toggle="modal" data-target="#myModal" src="./assets/images/logos/nbb.jpg" width="400" height="400"></button>
-                <!-- <img src="./assets/images/logos/nbb.jpg" class="img-thumbnail" width="400" height="400"> -->
-            </a>
-        </section>
-        <section class="col-sm-3 col-md-6 col-lg-4">
-            <a href="/login.html">
-                <input type="image" class="btn btn-primary" src="./assets/images/logos/pokemon.jpg" width="400" height="400"></button>
-                <!-- <img src="./assets/images/logos/pokemon.jpg" class="img-thumbnail" width="400" height="400"> -->
-            </a>
-        </section>
-          <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Niet geauthoriseed</h4>
-        </div>
-        <div class="modal-body">
-          <p>Je kan hier niet aan deelnemen.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <h1>Choose youre Project!</h1>
+      <div class="image-container">        
+        <a href="#" class="modal-trigger">
+          <img src="/assets/images/logos/lego-masters.jpg" alt="Lego Masters">
+        </a>
+        <a href="#" class="modal-trigger">
+          <img src="/assets/images/logos/nbb.jpg" alt="NBB">
+        </a>
+        <a href="#" class="modal-trigger">
+          <img src="/assets/images/logos/mtg.jpg" alt="Magic The Gathering">
+        </a>
+        <a href="#" class="modal-trigger">
+          <img src="/assets/images/logos/fifa.jpg" alt="FIFA">
+        </a>
+        <a href="#" class="modal-trigger">
+          <img src="/assets/images/logos/fortnite.jpg" alt="Fortnite">
+        </a>
+        <a href="#" class="modal-trigger">
+          <img src="/assets/images/logos/lotr.png" alt="Lord of The Rings">
+        </a>
+        <a href="/pokemonLandingspagina.html">
+          <img src="/assets/images/logos/pokemon.jpg" alt="Pokemon">
+        </a>
+      </div>
+  
+      <!-- Modal -->
+      <div class="modal" id="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Access Denied</h2>
+            <span class="close">&times;</span>
+          </div>
+          <div class="modal-body">
+            <p>You don't have access to this project.</p>
+          </div>
+          <div class="modal-footer">
+            <p>Please contact an administrator for access.</p>
+          </div>
         </div>
       </div>
       
-    </div>
-  </div>
+      <!--Modal END-->
     </main>
     <footer>
         <div class="footer-content">
