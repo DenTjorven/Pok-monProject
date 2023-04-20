@@ -4,39 +4,93 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <title>Document</title>
+    <link rel="stylesheet" href="css/eigenPBekijkenMultiple.css">
+    <link rel="stylesheet" href="css/individual.css">
+    <link rel="stylesheet" href="css/nav&footer.css">
+    <title>Pokédex</title>
 </head>
 <body>
+    <header>
+        <nav>
+          <div class="navbar">
+            <h1 style="color: wheat;">Pokémon</h1>
+            <div class="container nav-container">
+                <input class="checkbox" type="checkbox" name="" id="" />
+                <div class="hamburger-lines">
+                  <span class="line line1"></span>
+                  <span class="line line2"></span>
+                  <span class="line line3"></span>
+                </div>  
+              <div class="logo">
+                <a href="/registration.html"><img src="assets/images/logo_navbar/Pikachu-logo-nav.png" alt style="width: 50px; height:auto;"></a>
+                <a href="/registration.html"><h2>Peek At Us! </h2></a>
+              </div>
+              <div class="menu-items">
+                <li><h2 style="color:#8F004A;">Welcome to Peek-At-You !</h2></li>
+                <li><img src="assets/images/logo_navbar/Menu-logo.png" alt=""></li>                
+                <li><a href="pokemonLandingspagina.html">Home</a></li>
+                <li><a href="/login.html">Login</a></li>
+                <li><a href="/registration.html">Registration</a></li>
+                <li><a href="/pokemonVergelijken.html">PokéPare</a></li>
+                <li><a href="#">Battler!</a></li>
+                <li><a href="/pokemonVangen.html">Catch-Em-All!</a></li>
+                <li><a href="/eigenPokemonBekijkenMultiple.html">Pokédex...</a></li>
+                <li><a href="#">Who's That Pokémon?</a></li>    
+                <li><a href="algemeneLandingspagina.html">Exit</a></li> 
+
+        </header>
     <main>
-        <section>  
-                <h1 class="text-center">Nr pokemon - Name pokemon
-                </h1>
-                <img  src="piplup.png" alt="piplup">        
-        </section>
+        <div id="pokemon-overview">               
+            <section id="number-section">  
+                <p>#</p>
+                <h1 id="nr-pokemon">1130</h1>
+                <div id="a-div"></div>
+                <h2 id="naam-pokemon">Charmender</h2>
+            </section> 
+            <section id="section-pokemon">
+                <img id="img-pokemon-one" src="/assets/images/assets_Register_Login/charmender.png" alt="img-pokemon" style="width: 150px;" height="150px">       
+            </section>
+        </div>
 
-        <section>
-            <h2>
-                Nickname
-            </h2 class="text-right">
-            <p>Stats</p>
-            <img src="piplup_stats.jpg" alt="piplup_stats">
-        </section>
-
-        <section>
-            <h3 class="text-center">
-                Evolutie pad
-            </h3>
-            <img src="piplup_lvl1.png" alt="piplup_lvl1">
-            >
-            <img src="prinplup_lvl2.png" alt="prinplup_lvl2">
-            >
-            <img src="empoleon_lvl3.png" alt="empoleon_lvl3">
-        
-        </section>
-
+        <div id="pokemon-stats-evolutie">
+            <section id="stats-section">
+                <article id="Stats">
+                     <h3>Stats Pokémon:</h3>
+                     <p>Hp: <a id="hp"></a></p>
+                     <p>Atk: <a id="atk"></a></p>
+                     <p>Def: <a id="def"></a></p>
+                     <p>SpAtk: <a id="spAtk"></a></p>
+                     <p>SpDef: <a id="spDef"></a></p>
+                     <p>Spd: <a id="spd"></a></p>
+                </article>
+            </section>
+            <section id="evolution-section">
+                <h4 id="title-evolution-section">Evolution Path</h4>
+            <article>
+                <img id="original-pokemon" src="/assets/images/assets_Register_Login/charmender.png" alt="original-pokemon" style="width: 50px; height: 50px;" >
+                <p id="first-evolution-arrow">⤑</p>
+                <img id="first-evolution-img" src="/assets/images/assets_evolution/Charmeleon.png" alt="first-evolution" style="width: 50px; height: 50px;">
+                <p id="second-evolution-arrow">⤑</p> 
+                <img id="second-evolution-img" src="/assets/images/assets_evolution/Charizard.png" alt="second-evolution" style="width: 50px; height: 50px;">
+            </article>
+         </section>
+        </div>
     </main>
+    <footer>
+        <div class="footer-content">
+          <img src="/assets/images/logo_navbar/Pikachu-logo-nav.png" alt="" class="footer-logo">
+          <h4>Ap Hogeschool IT Project</h4>
+        </div>
+          <div class="footer-info">
+            <p>Project Leden:</p>
+            <ul>
+              <li>Kirollos</li>
+              <li>Lina</li>
+              <li>Olivier</li>
+              <li>Tjörven</li>
+              <li>William</li>
+            </ul>      
+        </div>
+      </footer> 
 </body>
 </html>
