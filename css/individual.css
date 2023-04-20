@@ -1,0 +1,103 @@
+#body{
+    box-sizing: border-box;
+}
+#number-section h2{
+    margin-left: 1em;
+    
+}
+
+main {
+    display: flex;
+    flex-direction:column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background-image: url(/assets/images/extra_fotos/poke-dex-background.png);
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+#pokemon-overview{
+    margin-top: 3em;
+}
+#stats-section{
+border-right: dashed #8F004A;
+border-radius: 10%;
+margin: 1.5em;
+}
+#Stats{
+    padding: 0.5em;
+}
+#Stats h3{
+    background: #0e2431;
+    padding: 0.5em;
+    border-radius:180cm;
+    font-size: 1.8em;
+}
+#Stats p {
+    background-color: #0e2431;
+    padding: 0.5em;
+    border-radius:180cm;
+    font-size: small;
+    margin-right: 11em;
+    margin-left: 1em;
+    margin-top: 1em;
+}
+#evolution-section p{
+    font-size:100px ;
+    
+}
+#evolution-section{
+    padding: 1em;
+}
+#evolution-section h4{
+    margin-top: 0.6em;
+    padding: 0.2em;
+    display: inline-block;
+    font-size: 30px;
+    background-color: #0e2431;
+    border-radius: 180cm;
+    text-align: center;
+}
+
+#evolution-section article {
+display: flex;
+flex-wrap: wrap;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 1em;
+background-color: #0e2431;
+border-radius: 180cm;
+margin: 1.5em;
+}
+#pokemon-stats-evolutie{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: rgba(128, 128, 128, 0.923);
+    border: #8F004A dashed;
+    border-radius:1cm;
+    margin: 3em;
+}
+
+/*-- display none BEGIN--*/
+#first-evolution-arrow{
+display: none;
+}
+#second-evolution-arrow{
+   display: none;
+}
+
+#original-pokemon{
+  display: none;
+}
+#first-evolution-img{
+  display: none;
+}
+#second-evolution-img{
+  display: none;
+}
+/*-- display none END--*/

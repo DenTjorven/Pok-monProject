@@ -1,0 +1,79 @@
+body {
+    background-color: rgba(245, 222, 179, 0.392);
+    font-family: monospace;
+    color: #F5AA09;
+    margin: 0;
+  }
+  
+  main {
+    display: flex;
+    flex-direction:row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    background-image: url(/assets/images/extra_fotos/poke-dex-background.png);
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+
+  }
+  #pokemon-overview{
+    display: block;
+    border:double 0.5em #8F004A ;
+    border-radius: 2%;
+    background-color: rgba(128, 128, 128, 0.667);
+    padding: 1em;
+    margin: 1em;
+
+  }
+  #section-pokemon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1em;
+  }
+   #number-section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10%;
+    padding: 10px;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+  }
+  #link-to-pokemon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+  #nr-pokemon { 
+    font-size: 1em;
+    padding: 0.4em;
+    background-color: rgba(255, 0, 0, 0.579);
+    border-radius: 10%;
+    border:10px double rgba(128, 128, 128, 0.701);
+      }
+
+  #naam-pokemon {
+    border: 3px solid ;
+    border-width: 10px;
+    border-image: url(/assets//images/logos/poké-catch-ball.png);
+    background-color: rgba(128, 128, 128, 0.797);
+    border-radius: 3%;
+    margin: 0;
+    padding: 0.3em;
+    font-size: 1em;
+    color:#F5AA09;
+  }
+ 
+  #number-section p{
+    font-size:2em ;
+    margin-right: 10px;
+  }
+  #link-to-pokemon{
+    color: #F5AA09;
+    text-decoration: none;
+  }

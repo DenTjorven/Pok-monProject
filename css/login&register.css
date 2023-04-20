@@ -2,42 +2,50 @@
 *{
   font-family: monospace;
 }  
-.loginImage{
-  background-image: url("/assets/images/assets_Register_Login/p.a.y_login_background.jpg");
+html, body {
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  background-image: url(/assets/images/assets_Register_Login/p.a.y_login_background.jpg);
+  background-repeat: no-repeat;
   background-size: cover;
+  background-attachment: fixed;
   background-position: center;
 }
-main {
-    background-image: url("/assets/images/assets_Register_Login/pokemon-ash-ketchum-pikachu-wallpaper-3000x2000_42.jpg");
-    background-size: cover;
-    background-position: center;
-    
-  }
-  
+main{margin: 2em;}
+#login-form{
+  margin-top: 15em;
+  margin-bottom: 15em;
+}
 
 h1 {
     text-align: center;
-    font-size: 2.5rem;
-    margin-top: 2rem;
   }
-  
   form {
+    
     margin: auto;
+    margin-bottom: 2em;
     max-width: 500px;
     padding: 2rem;
     border-radius: 10px;
     background-color: rgba(240, 248, 255, 0.723);
     box-shadow: 0 0 20px rgba(0,0,0,0.2);
     border-image:url(/assets/images/logos/poké-catch-ball.png);
-    border-image-width:15px;
+    border-image-width:30px;
+    background-color: gr;
+    box-shadow: 0px 0px 10px 5px rgba(245, 170, 9, 0.8),
+            0px 0px 10px 5px rgba(14, 36, 49, 0.8),
+            0px 0px 10px 5px rgba(194, 23, 33, 0.8),
+            0px 0px 10px 5px rgba(143, 0, 74, 0.8);
   }
   
   label {
     display: block;
     margin-bottom: 0.5rem;
     color: #8F004A;
+    text-shadow: 2px 2px 4px #F5AA09;  
     font-size: 1.2rem;
-    font-weight: bold;
+    font-weight:bolder;
   }
   
   input[type="text"], input[type="password"] {

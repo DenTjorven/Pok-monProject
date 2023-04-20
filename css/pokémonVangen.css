@@ -1,14 +1,20 @@
-body {
-  background-image: url(/assets/images/extra_fotos/Pokemon-forest-by-BlazingIfrit-Fur-Affinity-dot-net.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  font-family: monospace;
-  color: #F5AA09;
-  text-align: center;
-  margin: 0;
-}
 
+body {
+  box-sizing: border-box;
+    background-image: url(/assets/images/extra_fotos/pokemon-vangen-background.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-position: center;
+    font-family: monospace;
+    color: #F5AA09;
+    text-align: center;
+    margin: 0;
+  }
+main{
+margin: 1em;
+}
 #catch-button {
     background-image: url(/assets/images/logos/poké-catch-ball.png);
     background-repeat: no-repeat;
@@ -31,6 +37,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    
+  }
+  #name-pokemon-section{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
   }
   #pokemon-name {
     display: inline-block;
@@ -40,9 +54,11 @@ body {
     background-color: rgba(128, 128, 128, 0.774);
     border: rgb(82, 82, 82) 5px double; 
     border-image-width:10px;
+    
   }
   #pokemon-image {
-    margin-top: 2em; 
+    margin-top: 1em;
+    width: 24em; 
     z-index: 2;
   }  
   #catch-button:hover {
@@ -56,11 +72,13 @@ body {
     background-color: #8F004A;
     border: 3px double gray;
     border-radius: 10%;
-    margin: 2rem;
-    padding: 10px;
+    padding: 0.5em;
     color: #F5AA09;
-    border-image:url(/assets/images/logos/poké-catch-ball.png);
-    border-image-width:15px;
+    border-image-width:30px;
+    box-shadow: 0px 0px 10px 5px rgba(245, 170, 9, 0.8),
+            0px 0px 10px 5px rgba(14, 36, 49, 0.8),
+            0px 0px 10px 5px rgba(194, 23, 33, 0.8),
+            0px 0px 10px 5px rgba(143, 0, 74, 0.8);
   }
  #Chose_Your_Pokemon_Dropdown{
  color:#8F004A;
@@ -68,15 +86,20 @@ body {
  border: double 3px ;
  align-items: end;
  justify-content: flex-end;
+ 
  }
 #poke-catch {
-  display: flex;
-
-  justify-content: center;
+    display: flex;
+    
+    justify-content: center;
+  }
+#pokemon-name-label{
+  margin-right: 1em;
+  margin-top: 2em;
 }
 #Chose_Your_Pokemon_Dropdown {
-  display: inline-block;
-}
+    display: inline-block;
+  }
 #label-nickname,#nickname-input,#nickname-button{
   display: none;
 }
