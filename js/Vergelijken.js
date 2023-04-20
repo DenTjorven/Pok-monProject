@@ -110,4 +110,7 @@ dropdown2.addEventListener('change', function() {
     comparePokemon(1, 2);
   }, 250); 
 }); 
+function popOut(imageSrc) {
+  window.open(imageSrc, "Image Popout", "width=400, height=400");
+}
 loadData();
