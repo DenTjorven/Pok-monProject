@@ -1,14 +1,13 @@
-
 body {
-    background-image: url(/assets/images/extra_fotos/Pokemon-forest-by-BlazingIfrit-Fur-Affinity-dot-net.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    font-family: monospace;
-    color: #F5AA09;
-    text-align: center;
-    margin: 0;
-  }
+  background-image: url(/assets/images/extra_fotos/Pokemon-forest-by-BlazingIfrit-Fur-Affinity-dot-net.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  font-family: monospace;
+  color: #F5AA09;
+  text-align: center;
+  margin: 0;
+}
 
 #catch-button {
     background-image: url(/assets/images/logos/poké-catch-ball.png);
@@ -71,21 +70,13 @@ body {
  justify-content: flex-end;
  }
 #poke-catch {
-    display: flex;
-    
-    justify-content: center;
-  }
+  display: flex;
+
+  justify-content: center;
+}
 #Chose_Your_Pokemon_Dropdown {
-    display: inline-block;
-  }
-
-#legend{
-list-style: none;
-display: inline-block;
-padding: 10px;
-color:#F5AA09;
-background-color: rgba(128, 128, 128, 0.749);
-border-image-width:10px;
-border: double 10px;
-
+  display: inline-block;
+}
+#label-nickname,#nickname-input,#nickname-button{
+  display: none;
 }

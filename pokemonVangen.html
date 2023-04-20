@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="./js/Vangen.js" defer></script>
     <link rel="stylesheet" href="css/nav&footer.css">
     <link rel="stylesheet" href="/css/pokémonVangen.css">
     <title>pokemon_vangen</title>
@@ -42,29 +43,27 @@
                 <li><a href="#">Who's That Pokémon?</a></li>    
 </header>
 <main>
-  <label for="pokemon-name">You Found!</label>
+  <label for="pokemon-name" id="pokemon-name-label">You Found!</label>
   <br>
     <ul id="legend">
       <li>Caught=Green-pokéball</li>
       <li>Not-Caught=Red-Pokéball</li>
     </ul>
     <br>
-    <h1 id="pokemon-name"><img id="caughtOrNotImage" src="assets/images/logos/poké-catch-ball.png" alt="" style="height: 20px;" width="20px"> Naam van de Pokémon</h1>
+    <h1 id="pokemon-name"><img id="caughtOrNotImage" src="assets/images/logos/poké-catch-ball.png" alt="" style="height: 20px;" width="20px"> Naam van de Pokémon</h1>
       <br>
       <img id="pokemon-image" src="/assets/images/assets_Register_Login/charmender.png" alt="Image of the Pokemon" />
       <br>
       <form id="nickname-form" action="#" method="post">
-      <label id="label-nickname" for="nickname">Give your pokemon a nickname!:</label>
-      <input type="text" id="nickname-input" name="nickname" >
-      <input id="nickname-button" type="submit" value="Submit">
+      <label id="label-nickname" class="nickname" for="nickname">Give your pokemon a nickname!:</label>
+      <input type="text" id="nickname-input" class="nickname" name="nickname" >
+      <input id="nickname-button" class="nickname" type="submit" value="Submit">
     </form>
     <section id="poke-catch">
       <button id="catch-button"></button>
       <button id="Chose_Your_Pokemon_Dropdown">
         <label for="Chose_Your_Pokemon_Dropdown"> Chose Your Pokémon</label>
-      <select name="Chose_Your_Pokemon" id="yourePokemon">
-        <option value="red">red</option>
-        <option value="blue">blue</option>
+      <select name="Chose_Your_Pokemon" id="yourPokemon">
       </select>
     </button>
     </section>
