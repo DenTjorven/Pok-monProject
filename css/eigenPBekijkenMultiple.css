@@ -18,7 +18,12 @@ body {
     background-position: center;
 
   }
-  #pokemon-overview{
+  .pokedex-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+  }
+  .pokemon-overview{
     display: block;
     border:double 0.5em #8F004A ;
     border-radius: 2%;
@@ -27,14 +32,14 @@ body {
     margin: 1em;
 
   }
-  #section-pokemon {
+  .section-pokemon {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin-bottom: 1em;
   }
-   #number-section{
+   .number-section{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -43,13 +48,13 @@ body {
     margin-top: 1em;
     margin-bottom: 0.5em;
   }
-  #link-to-pokemon {
+  .link-to-pokemon {
     display: flex;
     justify-content: center;
     align-items: center;
     
   }
-  #nr-pokemon { 
+  .nr-pokemon { 
     font-size: 1em;
     padding: 0.4em;
     background-color: rgba(255, 0, 0, 0.579);
@@ -57,10 +62,10 @@ body {
     border:10px double rgba(128, 128, 128, 0.701);
       }
 
-  #naam-pokemon {
+  .naam-pokemon {
     border: 3px solid ;
     border-width: 10px;
-    border-image: url(/assets//images/logos/poké-catch-ball.png);
+    border-image: url(/assets/images/logos/poké-catch-ball.png);
     background-color: rgba(128, 128, 128, 0.797);
     border-radius: 3%;
     margin: 0;
@@ -69,11 +74,11 @@ body {
     color:#F5AA09;
   }
  
-  #number-section p{
+  .number-section p{
     font-size:2em ;
     margin-right: 10px;
   }
-  #link-to-pokemon{
+  .link-to-pokemon{
     color: #F5AA09;
     text-decoration: none;
   }
