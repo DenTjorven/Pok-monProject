@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/modal.js" defer></script>
+    <link rel="stylesheet" href="css/algemeneLandingspagina.css">
+    <title>AlgemeneLandingspagina</title>
+</head>
+<body>
+  <header>
+    <h1 style="color: #F5AA09;">IT Project</h1>
+    <nav>              
+            <li><a href="/login">Login</a></li>
+            <li><a href="/registration">Registration</a></li>  
+    </nav>
+    </header>
+    <main class="container-fluid">
+        <h1>Choose youre Project!</h1>
+      <div class="image-container">        
+        <a href="#" class="modal-trigger">
+          <img src="/images/logos/lego-masters.jpg" alt="Lego Masters">
+        </a>
+        <a href="#" class="modal-trigger">
+          <img src="/images/logos/nbb.jpg" alt="NBB">
+        </a>
+        <a href="#" class="modal-trigger">
+          <img src="/images/logos/mtg.jpg" alt="Magic The Gathering">
+        </a>
+        <a href="#" class="modal-trigger">
+          <img src="/images/logos/fifa.jpg" alt="FIFA">
+        </a>
+        <a href="#" class="modal-trigger">
+          <img src="/images/logos/fortnite.jpg" alt="Fortnite">
+        </a>
+        <a href="#" class="modal-trigger">
+          <img src="/images/logos/lotr.png" alt="Lord of The Rings">
+        </a>
+        <a href="/pokemon">
+          <img src="/images/logos/pokemon.jpg" alt="Pokemon">
+        </a>
+      </div>
+  
+      <!-- Modal -->
+      <div class="modal" id="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Access Denied</h2>
+            <span class="close">&times;</span>
+          </div>
+          <div class="modal-body">
+            <p>You don't have access to this project.</p>
+          </div>
+          <div class="modal-footer">
+            <p>Please contact an administrator for access.</p>
+          </div>
+        </div>
+      </div>
+</main>
+        <% include('footer.ejs'); %>
+</body>

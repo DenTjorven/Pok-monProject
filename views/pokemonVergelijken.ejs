@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/Vergelijken.js" defer></script>
+    <link rel="stylesheet" href="css/nav&footer.css">
+    <link rel="stylesheet" href="css/vergekijkPokémon.css">
+    <title>PokemonVergelijken</title>
+</head>
+<body>
+    <% include('header.ejs'); %>
+    <main>
+        <section id="welcome-section">
+          <h1 id="WelcomeMainMessage">Welcome To PokéPair!</h1>
+          <br>
+          <h2 id="WelcomeMessage">A Quick Way to Compare Your Pokémon</h2>
+        </section>
+        <div id="pkmn-sections">
+            <section id="pkmn1">
+            <h2 id="Naam1">Pokémon 1 Naam placeholder</h2>
+            <a href="#">
+            <img id="Img1" src="" class="img-responsive" onclick="popOut(this.src)"></a>
+            <article id="Stats1">
+                <h1>Your Pokémon:</h1>
+                  <p>Hp: <a id="hp1"></a></p>
+                  <p>Atk: <a id="atk1"></a></p>
+                  <p>Def: <a id="def1"></a></p>
+                  <p>SpAtk: <a id="spAtk1"></a></p>
+                  <p>SpDef: <a id="spDef1"></a></p>
+                  <p>Spd: <a id="spd1"></a></p>
+                <label for="dropdown-1">Choose Your Pokémon</label>
+                <select id="dropdown-1">
+                </select>
+            </article>
+            </section>
+            <div id="a-space"></div>
+            <section id="pkmn2">
+            <h2 id="Naam2">Pokémon 2 Naam placeholder</h2>
+            <a href="#">
+            <img id="Img2" src="" class="img-responsive" onclick="popOut(this.src)"></a>
+            <article id="Stats2">
+                <h1>Stats Pokémon:</h1>
+                  <p>Hp: <a id="hp2"></a></p>
+                  <p>Atk: <a id="atk2"></a></p>
+                  <p>Def: <a id="def2"></a></p>
+                  <p>SpAtk: <a id="spAtk2"></a></p>
+                  <p>SpDef: <a id="spDef2"></a></p>
+                  <p>Spd: <a id="spd2"></a></p>
+                <label for="dropdown-2">Choose Pokémon:</label>
+            <select id="dropdown-2">
+            </select>
+            </article>
+            </section>
+        </div>
+     </main>
+    <% include('footer.ejs'); %>
+</body>

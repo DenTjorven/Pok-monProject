@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/nav&footer.css">
+    <link rel="stylesheet" href="css/login&register.css">
+    <script src="js/login_register.js"></script>
+    <title>p.a.y_registration</title>
+</head>
+<body>
+    <% include('header.ejs'); %>
+    <main>
+        <br>
+        <br> 
+          <form>
+          <h1>Registration</h1>
+          <br><br>
+              <label for="name">Name:</label>
+              <input type="text" id="name" name="name" required><br><br>
+      
+              <label for="last-name">Last Name:</label>
+              <input type="text" id="last-name" name="last-name" required><br><br>
+      
+              <label for="username">Username:</label>
+              <input type="text" id="username" name="username" required><br><br>
+      
+          <label for="pokemon-choice">Choose a starter Pokemon:</label>
+          <select id="pokemon-choice" onchange="showImage()">
+            <option value="">Select a Pokemon</option>
+            <option value="bulbasaur">Bulbasaur</option>
+            <option value="squirtle">Squirtle</option>
+            <option value="charmander">Charmander</option>
+          </select>
+          
+          <div id="pokemon-images">
+            <img src="/images/assets_Register_Login/bulbasaur.png" alt="" class="hidden" id="bulbasaur-img">
+            <img src="/images/assets_Register_Login/squirtle.png" alt="" class="hidden" id="squirtle-img">
+            <img src="/images/assets_Register_Login/charmender.png" alt="" class="hidden" id="charmander-img">
+          </div>
+      
+            <br><br><br>
+              <label for="password">Password:</label>
+              <input type="password" id="password" name="password" required><br><br>
+      
+              <label for="confirmation-password">Confirmation Password:</label>
+              <input type="password" id="confirmation-password" name="confirmation-password" required><br><br>
+          
+      
+              <input type="submit" value="Start Adventure!">
+          </form>
+      </main>
+    <% include('footer.ejs'); %>
+</body>
