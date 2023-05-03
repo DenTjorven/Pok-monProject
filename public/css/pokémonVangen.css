@@ -1,7 +1,7 @@
 
 body {
   box-sizing: border-box;
-    background-image: url(/assets/images/extra_fotos/pokemon-vangen-background.png);
+    background-image: url(../images/extra_fotos/pokemon-vangen-background.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -16,7 +16,7 @@ main{
 margin: 1em;
 }
 #catch-button {
-    background-image: url(/assets/images/logos/poké-catch-ball.png);
+    background-image: url(../images/logos/poké-catch-ball.png);
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;

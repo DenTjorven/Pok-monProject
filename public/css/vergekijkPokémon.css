@@ -52,7 +52,7 @@ h1{
 main{
     display: flex;
     flex-direction: column;
-    background-image: url(/assets/images/extra_fotos/poke-dex-background.png);
+    background-image: url(../images/extra_fotos/poke-dex-background.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -85,7 +85,7 @@ box-shadow: 0px 0px 10px 5px rgba(245, 170, 9, 0.8),
     display: block;
     margin: 0 auto;
     max-width: 100%;
-    background-image: url(/assets/images/extra_fotos/pokemon-vangen-background.png);
+    background-image: url(../images/extra_fotos/pokemon-vangen-background.png);
     background-size: cover;
     border-radius: 10cm;
     border: 0.5em double #F5AA09;
@@ -105,7 +105,7 @@ article {
     border-style:double;
     color: #8F004A;
     border-radius: 2%;
-    border-image:url(/assets/images/logos/poké-catch-ball.png);
+    border-image:url(../images/logos/poké-catch-ball.png);
     border-image-width:15px;
 }
 select{

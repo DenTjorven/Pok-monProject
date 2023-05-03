@@ -11,7 +11,7 @@ body {
     flex-wrap: wrap;
     justify-content: center;
     align-items: flex-start;
-    background-image: url(/assets/images/extra_fotos/poke-dex-background.png);
+    background-image: url(../images/extra_fotos/poke-dex-background.png);
     background-size:cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -65,7 +65,7 @@ body {
   .naam-pokemon {
     border: 3px solid ;
     border-width: 10px;
-    border-image: url(/assets/images/logos/poké-catch-ball.png);
+    border-image: url(../images/logos/poké-catch-ball.png);
     background-color: rgba(128, 128, 128, 0.797);
     border-radius: 3%;
     margin: 0;
