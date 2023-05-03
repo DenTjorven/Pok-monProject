@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./js/Vergelijken.js" defer></script>
+    <script src="../js/Vergelijken.js" defer></script>
     <link rel="stylesheet" href="css/nav&footer.css">
     <link rel="stylesheet" href="css/vergekijkPokémon.css">
     <title>PokemonVergelijken</title>
 </head>
 <body>
-    <% include('header.ejs'); %>
+    <%- include('header.ejs'); %>
     <main>
         <section id="welcome-section">
           <h1 id="WelcomeMainMessage">Welcome To PokéPair!</h1>
@@ -55,5 +55,5 @@
             </section>
         </div>
      </main>
-    <% include('footer.ejs'); %>
+    <%- include('footer.ejs'); %>
 </body>
