@@ -1,5 +1,10 @@
 import express from "express";
 import ejs from "ejs";
+import {MongoClient, ObjectId} from "mongodb";
+
+const uri: string = "mongodb+srv://kirolloswanas:W2Y5kH10NuxLDeQZ@cluster0.eqghavq.mongodb.net/?retryWrites=true&w=majority";
+
+const client = new MongoClient(uri);
 const fetch = require('node-fetch');
 const app = express();
 app.set('view engine', 'ejs');
@@ -30,4 +35,41 @@ app.get("/vergelijken", (req, res) => {
     res.render('pokemonVergelijken');
 });
 
+interface User {
+    _id?: ObjectId,
+    firstName: string,
+    lastName: string,
+    userPassword: string,
+    userName: string
+}
+interface GevangenPokemon {
+    _id?: ObjectId,
+    pokedexNr: number,
+    nicknamePokemon?: string
+}
+
+const main = async () => {
+    try {
+        await client.connect();
+        //let databases = await client.db().admin().listDatabases();
+
+        //console.log(databases.databases);
+
+        await client.db("Pokemon").collection("Users").deleteMany({}); //om dublicaties te vermijden elk keer we de script runnen
+        await client.db("Pokemon").collection("GevangenPokemon").deleteMany({}); //om dublicaties te vermijden elk keer we de script runnen
+
+        //await client.db("Pokemon").collection("Users").insert();
+        //await client.db("Pokemon").collection("GevangenPokemon").insert();
+
+    } catch (e) {
+        console.error(e)
+    } finally {
+        await client.close();
+    }
+}
+
+main();
+
+
 app.listen(app.get('port'), ()=>console.log( '[server] http://localhost:' + app.get('port')));
+export {};
