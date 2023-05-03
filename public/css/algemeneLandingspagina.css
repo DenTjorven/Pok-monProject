@@ -5,7 +5,7 @@ html,body{
     font-family: monospace;
 }
 body{
-    background-image: url(/assets/images/extra_fotos/500x500-omnichannel.png);
+    background-image: url(../images/extra_fotos/500x500-omnichannel.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;

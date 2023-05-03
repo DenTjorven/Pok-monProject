@@ -3,7 +3,7 @@ body{
 }
 main{
 padding: 1.5em;
-background-image: url(/assets/images/assets_home/achtergrond.png);
+background-image: url(../images/assets_home/achtergrond.png);
 background-size: cover;
 background-position: center;
 background-repeat: no-repeat;

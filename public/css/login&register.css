@@ -6,7 +6,7 @@ html, body {
   box-sizing: border-box;
   width: 100%;
   height: auto;
-  background-image: url(/assets/images/assets_Register_Login/p.a.y_login_background.jpg);
+  background-image: url(../images/assets_Register_Login/p.a.y_login_background.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
