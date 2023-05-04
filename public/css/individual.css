@@ -12,7 +12,7 @@ main {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    background-image: url(/assets/images/extra_fotos/poke-dex-background.png);
+    background-image: url(../images/extra_fotos/poke-dex-background.png);
     background-size:cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
