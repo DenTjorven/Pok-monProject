@@ -14,24 +14,24 @@
     <main>
         <br>
         <br> 
-          <form>
+          <form action="/registration" method="post">
           <h1>Registration</h1>
           <br><br>
               <label for="name">Name:</label>
               <input type="text" id="name" name="name" required><br><br>
       
-              <label for="last-name">Last Name:</label>
-              <input type="text" id="last-name" name="last-name" required><br><br>
+              <label for="lastname">Last Name:</label>
+              <input type="text" id="lastname" name="lastname" required><br><br>
       
               <label for="username">Username:</label>
               <input type="text" id="username" name="username" required><br><br>
       
           <label for="pokemon-choice">Choose a starter Pokemon:</label>
-          <select id="pokemon-choice" onchange="showImage()">
+          <select id="pokemon-choice" name="pokemon-choice" onchange="showImage()">
             <option value="">Select a Pokemon</option>
-            <option value="bulbasaur">Bulbasaur</option>
-            <option value="squirtle">Squirtle</option>
-            <option value="charmander">Charmander</option>
+            <option value="1">Bulbasaur</option>
+            <option value="4">Charmander</option>
+            <option value="7">Squirtle</option>
           </select>
           
           <div id="pokemon-images">
