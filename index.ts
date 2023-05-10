@@ -8,6 +8,8 @@ app.use(methodOverride('_method'));
 import { MongoClient, ObjectId, InsertOneResult } from "mongodb";
 const uri: string = "mongodb+srv://kirolloswanas:W2Y5kH10NuxLDeQZ@cluster0.eqghavq.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri);
+const CryptoJS = require('crypto-js');
+const salt = CryptoJS.lib.WordArray.random().toString();
 app.set('view engine', 'ejs');
 app.set('port', 3000);
 app.use(express.static('public'))
@@ -39,10 +41,8 @@ interface GevangenPokemon {
 const checkUser = async (username: string, password: string): Promise<User | null> => {
     try {
       await client.connect();
-      console.log(username);
-      console.log(password);
-      const userDoc = await client.db("Pokemon").collection("Users").findOne({ userName: username, userPassword: password });
-      console.log(userDoc);
+      const hashedPasword = hash(password);
+      const userDoc = await client.db("Pokemon").collection("Users").findOne({ userName: username, userPassword: hashedPasword });
       if (userDoc) {
         const { _id, firstName, lastName, userName, password: userPassword } = userDoc;
         const user: User = { _id: new ObjectId(_id), firstName, lastName, userName, userPassword };
@@ -55,10 +55,14 @@ const checkUser = async (username: string, password: string): Promise<User | nul
     }
     return null;
 };
-
+const hash = (password: string) => {
+    let hashedPasword = CryptoJS.PBKDF2(password, salt, {iterations: 30000}).toString(); 
+    return hashedPasword;
+}
 const addUser = async (user: User): Promise<User> => {
     try {
         await client.connect();
+        user.userPassword = hash(user.userPassword);
         await client.db("Pokemon").collection("Users").insertOne(user);
         return user;
     } catch (e) {
@@ -71,10 +75,8 @@ const addUser = async (user: User): Promise<User> => {
 const getPokemonArray = async (id:ObjectId) => {
     try {
         await client.connect();
-        console.log(id);
         let cursor = client.db("Pokemon").collection("GevangenPokemon").find<GevangenPokemon>({user_id: new ObjectId(id)});
         let result = await cursor.toArray();
-        console.log(result);
         return result;
     } catch (e) {
         console.error(e)
@@ -85,7 +87,13 @@ const getPokemonArray = async (id:ObjectId) => {
 const addPokemon = async (pokemon: GevangenPokemon): Promise<void> => {
     try {
       await client.connect();
-      await client.db("Pokemon").collection("GevangenPokemon").insertOne({user_id: pokemon.user_id, pokedexNr: pokemon.pokedexNr});
+      console.log(pokemon.nicknamePokemon);
+      console.log(pokemon.pokedexNr);
+      console.log(pokemon.user_id);
+      if(pokemon.nicknamePokemon == null){
+        pokemon.nicknamePokemon = "";
+      }
+      await client.db("Pokemon").collection("GevangenPokemon").insertOne({user_id: pokemon.user_id, pokedexNr: pokemon.pokedexNr, nicknamePokemon: pokemon.nicknamePokemon});
     } catch (e) {
       console.error(e);
       throw e;
@@ -93,14 +101,23 @@ const addPokemon = async (pokemon: GevangenPokemon): Promise<void> => {
       await client.close();
     }
 };
-async function loadData(allepkmn: GevangenPokemon[]): Promise<string[]> {
+async function loadData(allepkmn: GevangenPokemon[]): Promise<{ pkmnnames: string[], pkmnatk: number[] }> {
     const promises = allepkmn.map(async (pokemon) => {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.pokedexNr}`);
       const data = await response.json();
-      return data.name;
+      const pkmnnames = data.name;
+      const pkmnatk = data.stats[3].base_stat;
+      return { pkmnnames, pkmnatk };
     });
-    return Promise.all(promises);
+  
+    const results = await Promise.all(promises);
+  
+    const pkmnnames: string[] = results.map((result) => result.pkmnnames);
+    const pkmnatk: number[] = results.map((result) => result.pkmnatk);
+  
+    return { pkmnnames, pkmnatk };
 }
+  
   
 app.get("/", (req, res) => {
     req.session.destroy((err) => {
@@ -140,7 +157,6 @@ app.post('/registration', async (req, res) => {
         userPassword: req.body.password,
         userName: req.body.username
     };
-    console.log(req.body['pokemon-choice']);
     const newUser = await addUser(user);
     const pokemon: GevangenPokemon = {
         user_id: newUser._id, 
@@ -153,24 +169,31 @@ app.get("/pokemon", (req, res) => {
     res.render('pokemonLandingspagina');
 });
 app.get("/vangen", async (req, res) => {
-    console.log(req.session?.user?._id);
     const userId = req.session?.user?._id;
     if (userId) {
-      console.log(userId);
       const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
       if (allePkmn) {
-        const allePkmnNamen: string[] | undefined = await loadData(allePkmn);
-        console.log(allePkmn);
-        console.log(allePkmnNamen);
-        res.render('pokemonVangen', { allePkmnNamen });
+        const { pkmnnames, pkmnatk } = await loadData(allePkmn);
+        res.render('pokemonVangen', { allePkmnNamen: pkmnnames, allePkmnAtk: pkmnatk });
       }
     }
-  });
-;
+});
+app.post('/vangen', async (req, res) => {
+    const user = req.session?.user;
+    console.log(user);
+    const NieuweID = parseInt(req.body.pkmnName.dataset.value);
+    console.log(NieuweID);
+    const Nieuwepokemon: GevangenPokemon = {
+        user_id: user?._id, 
+        pokedexNr: NieuweID,
+        nicknamePokemon: req.body.nickname
+    };
+    await addPokemon(Nieuwepokemon);
+    res.redirect('/vangen');
+});  
 app.get("/vergelijken", (req, res) => {
     res.render('pokemonVergelijken');
 });
-
 const main = async () => {
     try {
         await client.connect();

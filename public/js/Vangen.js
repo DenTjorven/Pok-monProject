@@ -16,6 +16,7 @@ async function loadData(id) {
     const pokemon = data;
     const pkmnName = document.getElementById('pokemon-name');
     pkmnName.textContent = pokemon.name;
+    pkmnName.dataset.value = pokemon.id.toString();
     catchImg.src = pokemon.sprites.other["official-artwork"].front_default;
     return pokemon.stats[3].base_stat;
 }
@@ -38,7 +39,7 @@ catchButton.addEventListener('click', async function(){
     const randomProcent = Math.floor(Math.random() * 98);
     const yourIndex = dropdown.selectedIndex;
         const def = await loadData(randomID);
-        let check = 60-def+staticPKMNATKArray[yourIndex]
+        let check = 60-def+85
         if(check > 100){
             check = 100
         }
@@ -50,6 +51,7 @@ catchButton.addEventListener('click', async function(){
     } else if(check > randomProcent){
         chanceCounter = 3;
         chanceLabel.textContent = "SUCCES, POKEMON GEVANGEN"
+
         for (let i = 0; i < nics.length; i++) {
             nics[i].style.display = "inline-block";
         }
