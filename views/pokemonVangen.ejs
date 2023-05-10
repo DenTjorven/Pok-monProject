@@ -16,22 +16,24 @@
           <label for="pokemon-name" id="pokemon-name-label">You Found!</label>
           <br>
             <br>
-            <h1 id="pokemon-name"><img id="caughtOrNotImage" src="/images/logos/poké-catch-ball.png" alt="" style="height: 20px;" width="20px"> Naam van de Pokémon</h1>
+            <h1 id="pokemon-name" name="pkmnName"><img id="caughtOrNotImage" src="/images/logos/poké-catch-ball.png" alt="" style="height: 20px;" width="20px"> Naam van de Pokémon</h1>
         </section>
             <br>
             <img id="pokemon-image" src="/images/assets_Register_Login/charmender.png" alt="Image of the Pokemon" />
             <br>
-            <form id="nickname-form" action="#" method="post">
-            <label id="label-nickname" class="nickname" for="nickname">Give your pokemon a nickname!:</label>
-            <input type="text" id="nickname-input" class="nickname" name="nickname" >
-            <input id="nickname-button" class="nickname" type="submit" value="Submit">
-        </form>
+            <form id="nickname-form" action="/vangen" method="POST">
+                <label id="label-nickname" class="nickname" for="nickname">Give your pokemon a nickname!:</label>
+                <input type="text" id="nickname-input" class="nickname" name="nickname" >
+                <input id="nickname-button" class="nickname" type="submit" value="Submit">
+            </form>
         <section id="poke-catch">
             <button id="catch-button"></button>
             <button id="Chose_Your_Pokemon_Dropdown">
             <label for="Chose_Your_Pokemon_Dropdown"> Chose Your Pokémon</label>
-            <select name="Chose_Your_Pokemon" id="yourPokemon">
-              
+            <select id="Chose_Your_Pokemon">
+                <% allePkmnNamen.forEach(function(pokemonname) { %>
+                  <option><%= pokemonname %></option>
+                <% }); %>
             </select>
         </button>
         </section>
