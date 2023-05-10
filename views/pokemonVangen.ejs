@@ -30,8 +30,10 @@
             <button id="catch-button"></button>
             <button id="Chose_Your_Pokemon_Dropdown">
             <label for="Chose_Your_Pokemon_Dropdown"> Chose Your Pokémon</label>
-            <select name="Chose_Your_Pokemon" id="yourPokemon">
-              
+            <select id="Chose_Your_Pokemon">
+                <% allePkmnNamen.forEach(function(pokemonname) { %>
+                  <option><%= pokemonname %></option>
+                <% }); %>
             </select>
         </button>
         </section>

@@ -41,7 +41,7 @@ const checkUser = async (username: string, password: string): Promise<User | nul
       await client.connect();
       console.log(username);
       console.log(password);
-      const userDoc = await client.db("mydatabase").collection("users").findOne({ userName: username, userPassword: password });
+      const userDoc = await client.db("Pokemon").collection("Users").findOne({ userName: username, userPassword: password });
       console.log(userDoc);
       if (userDoc) {
         const { _id, firstName, lastName, userName, password: userPassword } = userDoc;
@@ -68,10 +68,14 @@ const addUser = async (user: User): Promise<User> => {
         await client.close();
     }
 };
-const getPokemonArray = async (_id:ObjectId) => {
+const getPokemonArray = async (id:ObjectId) => {
     try {
         await client.connect();
-        //code to be completed
+        console.log(id);
+        let cursor = client.db("Pokemon").collection("GevangenPokemon").find<GevangenPokemon>({user_id: new ObjectId(id)});
+        let result = await cursor.toArray();
+        console.log(result);
+        return result;
     } catch (e) {
         console.error(e)
     } finally {
@@ -81,7 +85,7 @@ const getPokemonArray = async (_id:ObjectId) => {
 const addPokemon = async (pokemon: GevangenPokemon): Promise<void> => {
     try {
       await client.connect();
-      await client.db("Pokemon").collection("GevangenPokemon").insertOne(pokemon);
+      await client.db("Pokemon").collection("GevangenPokemon").insertOne({user_id: pokemon.user_id, pokedexNr: pokemon.pokedexNr});
     } catch (e) {
       console.error(e);
       throw e;
@@ -89,6 +93,15 @@ const addPokemon = async (pokemon: GevangenPokemon): Promise<void> => {
       await client.close();
     }
 };
+async function loadData(allepkmn: GevangenPokemon[]): Promise<string[]> {
+    const promises = allepkmn.map(async (pokemon) => {
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.pokedexNr}`);
+      const data = await response.json();
+      return data.name;
+    });
+    return Promise.all(promises);
+}
+  
 app.get("/", (req, res) => {
     req.session.destroy((err) => {
         if (err) {
@@ -109,7 +122,6 @@ app.post('/login', async (req, res) => {
     const username: string = req.body.username;
     const password: string = req.body.password;
     const user = await checkUser(username, password);
-    console.log(user);
     if (user) {
         req.session.user = user;
         res.redirect('/pokemon');
@@ -128,6 +140,7 @@ app.post('/registration', async (req, res) => {
         userPassword: req.body.password,
         userName: req.body.username
     };
+    console.log(req.body['pokemon-choice']);
     const newUser = await addUser(user);
     const pokemon: GevangenPokemon = {
         user_id: newUser._id, 
@@ -139,9 +152,21 @@ app.post('/registration', async (req, res) => {
 app.get("/pokemon", (req, res) => {
     res.render('pokemonLandingspagina');
 });
-app.get("/vangen", (req, res) => {
-    res.render('pokemonVangen');
-});
+app.get("/vangen", async (req, res) => {
+    console.log(req.session?.user?._id);
+    const userId = req.session?.user?._id;
+    if (userId) {
+      console.log(userId);
+      const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
+      if (allePkmn) {
+        const allePkmnNamen: string[] | undefined = await loadData(allePkmn);
+        console.log(allePkmn);
+        console.log(allePkmnNamen);
+        res.render('pokemonVangen', { allePkmnNamen });
+      }
+    }
+  });
+;
 app.get("/vergelijken", (req, res) => {
     res.render('pokemonVergelijken');
 });

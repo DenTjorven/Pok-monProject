@@ -1,9 +1,6 @@
-const staticPKMNURLArray = ["https://pokeapi.co/api/v2/pokemon/1","https://pokeapi.co/api/v2/pokemon/4","https://pokeapi.co/api/v2/pokemon/7"]
-const staticPKMNNAMEArray = ["bulbasaur","charmander","squirtle"];
-const staticPKMNATKArray = [49,52,48]
 let chanceCounter = 3;
 let randomID;
-const dropdown = document.getElementById('yourPokemon');
+const dropdown = document.getElementById('Chose_Your_Pokemon');
 const catchButton = document.getElementById('catch-button');
 const chanceLabel = document.getElementById('pokemon-name-label');
 const catchImg = document.getElementById(`pokemon-image`);
@@ -12,14 +9,6 @@ const genRandom = async () => {
     randomID = Math.floor(Math.random() * 1010);
     loadData(randomID)
     chanceLabel.textContent = "Chances left: " + chanceCounter
-}
-const populateDropdown = () => {
-    for (let i = 0; i < staticPKMNURLArray.length; i++) {
-        const option = document.createElement('option');
-        option.value = staticPKMNURLArray[i];
-        option.textContent = staticPKMNNAMEArray[i];
-        dropdown.appendChild(option);
-    }
 }
 async function loadData(id) {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
@@ -73,5 +62,4 @@ catchButton.addEventListener('click', async function(){
 catchImg.addEventListener('click', function() {
     window.open(catchImg.src, '_blank', 'height=600,width=800');
 });
-populateDropdown();
 genRandom();
