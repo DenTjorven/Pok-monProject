@@ -5,6 +5,7 @@ const catchButton = document.getElementById('catch-button');
 const chanceLabel = document.getElementById('pokemon-name-label');
 const catchImg = document.getElementById(`pokemon-image`);
 const nics = document.getElementsByClassName('nickname');
+const nicValue = document.getElementById('nickname-value');
 const genRandom = async () => {
     randomID = Math.floor(Math.random() * 1010);
     loadData(randomID)
@@ -16,7 +17,7 @@ async function loadData(id) {
     const pokemon = data;
     const pkmnName = document.getElementById('pokemon-name');
     pkmnName.textContent = pokemon.name;
-    pkmnName.dataset.value = pokemon.id.toString();
+    nicValue.value = pokemon.id.toString();
     catchImg.src = pokemon.sprites.other["official-artwork"].front_default;
     return pokemon.stats[3].base_stat;
 }
@@ -25,7 +26,7 @@ catchButton.addEventListener('click', async function(){
     const randomProcent = Math.floor(Math.random() * 98);
     const yourIndex = dropdown.selectedIndex;
         const def = await loadData(randomID);
-        let check = 60-def+85
+        let check = 60-def+85//normally based on yourIndexATK
         if(check > 100){
             check = 100
         }
@@ -41,7 +42,6 @@ catchButton.addEventListener('click', async function(){
         for (let i = 0; i < nics.length; i++) {
             nics[i].style.display = "inline-block";
         }
-        await nickname;
     }else{
         chanceCounter--
         chanceLabel.textContent = "Chances left: " + chanceCounter

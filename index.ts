@@ -2,8 +2,8 @@ import express from "express";
 import ejs from "ejs";
 const fetch = require('node-fetch');
 const app = express();
-import methodOverride from 'method-override';
 import session from 'express-session';
+import methodOverride from 'method-override';
 app.use(methodOverride('_method'));
 import { MongoClient, ObjectId, InsertOneResult } from "mongodb";
 const uri: string = "mongodb+srv://kirolloswanas:W2Y5kH10NuxLDeQZ@cluster0.eqghavq.mongodb.net/?retryWrites=true&w=majority";
@@ -14,8 +14,8 @@ app.set('view engine', 'ejs');
 app.set('port', 3000);
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }));
-app.use(session({
-    secret: 'my-secret-key',
+app.use(session({ // Update this middleware setup
+    secret: 'your-secret-key',
     resave: false,
     saveUninitialized: false
 }));
@@ -93,7 +93,7 @@ const addPokemon = async (pokemon: GevangenPokemon): Promise<void> => {
       if(pokemon.nicknamePokemon == null){
         pokemon.nicknamePokemon = "";
       }
-      await client.db("Pokemon").collection("GevangenPokemon").insertOne({user_id: pokemon.user_id, pokedexNr: pokemon.pokedexNr, nicknamePokemon: pokemon.nicknamePokemon});
+      await client.db("Pokemon").collection("GevangenPokemon").insertOne({user_id: new ObjectId(pokemon.user_id), pokedexNr: pokemon.pokedexNr, nicknamePokemon: pokemon.nicknamePokemon});
     } catch (e) {
       console.error(e);
       throw e;
@@ -101,21 +101,33 @@ const addPokemon = async (pokemon: GevangenPokemon): Promise<void> => {
       await client.close();
     }
 };
-async function loadData(allepkmn: GevangenPokemon[]): Promise<{ pkmnnames: string[], pkmnatk: number[] }> {
+async function loadData(allepkmn: GevangenPokemon[]): Promise<{ pkmnNames: string[], pkmnImg: string[], pkmnHP: number[], pkmnAtk: number[], pkmnDef: number[], pkmnSpAtk: number[], pkmnSpDef: number[], pkmnSpd: number[] }> {
     const promises = allepkmn.map(async (pokemon) => {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.pokedexNr}`);
       const data = await response.json();
-      const pkmnnames = data.name;
-      const pkmnatk = data.stats[3].base_stat;
-      return { pkmnnames, pkmnatk };
+      const pkmnNames = data.name;
+      const pkmnImg = data.sprites.other["official-artwork"].front_default;
+      const pkmnHP = data.stats[0].base_stat;
+      const pkmnAtk = data.stats[1].base_stat;
+      const pkmnDef = data.stats[2].base_stat;
+      const pkmnSpAtk = data.stats[3].base_stat;
+      const pkmnSpDef = data.stats[4].base_stat;
+      const pkmnSpd = data.stats[5].base_stat;
+      return { pkmnNames, pkmnImg, pkmnHP, pkmnAtk, pkmnDef, pkmnSpAtk, pkmnSpDef, pkmnSpd};
     });
   
     const results = await Promise.all(promises);
   
-    const pkmnnames: string[] = results.map((result) => result.pkmnnames);
-    const pkmnatk: number[] = results.map((result) => result.pkmnatk);
+    const pkmnNames: string[] = results.map((result) => result.pkmnNames);
+    const pkmnImg: string[] = results.map((result) => result.pkmnImg);
+    const pkmnHP: number[] = results.map((result) => result.pkmnHP);
+    const pkmnAtk: number[] = results.map((result) => result.pkmnAtk);
+    const pkmnDef: number[] = results.map((result) => result.pkmnDef);
+    const pkmnSpAtk: number[] = results.map((result) => result.pkmnSpAtk);
+    const pkmnSpDef: number[] = results.map((result) => result.pkmnSpDef);
+    const pkmnSpd: number[] = results.map((result) => result.pkmnSpd);
   
-    return { pkmnnames, pkmnatk };
+    return { pkmnNames, pkmnImg, pkmnHP, pkmnAtk, pkmnDef, pkmnSpAtk, pkmnSpDef, pkmnSpd};
 }
   
   
@@ -174,19 +186,18 @@ app.get("/pokemon", (req, res) => {
 });
 app.get("/vangen", async (req, res) => {
     const userId = req.session?.user?._id;
-    console.log("test")
     if (userId) {
       const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
       if (allePkmn) {
-        const { pkmnnames, pkmnatk } = await loadData(allePkmn);
-        res.render('pokemonVangen', { allePkmnNamen: pkmnnames, allePkmnAtk: pkmnatk });
+        const { pkmnNames, pkmnAtk } = await loadData(allePkmn);
+        res.render('pokemonVangen', { allePkmnNamen: pkmnNames, allePkmnAtk: pkmnAtk });
       }
     }
 });
 app.post('/vangen', async (req, res) => {
     const user = req.session?.user;
     console.log(user);
-    const NieuweID = parseInt(req.body.pkmnName.dataset.value);
+    const NieuweID = parseInt(req.body.nicknamevalue);
     console.log(NieuweID);
     const Nieuwepokemon: GevangenPokemon = {
         user_id: user?._id, 
@@ -196,8 +207,15 @@ app.post('/vangen', async (req, res) => {
     await addPokemon(Nieuwepokemon);
     res.redirect('/vangen');
 });  
-app.get("/vergelijken", (req, res) => {
-    res.render('pokemonVergelijken');
+app.get("/vergelijken", async (req, res) => {
+    const userId = req.session?.user?._id;
+    if (userId) {
+      const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
+      if (allePkmn) {
+        const { pkmnNames, pkmnImg, pkmnHP, pkmnAtk, pkmnDef, pkmnSpAtk, pkmnSpDef, pkmnSpd } = await loadData(allePkmn);
+        res.render('pokemonVergelijken', { allePkmnNamen: pkmnNames, allePkmnImg: pkmnImg, allePkmnHp: pkmnHP, allePkmnAtk: pkmnAtk,allePkmnDef: pkmnDef, allePkmnSpAtk: pkmnSpAtk, allePkmnSpDef: pkmnSpDef, allePkmnSpd: pkmnSpd, });
+      }
+    }
 });
 const main = async () => {
     try {
