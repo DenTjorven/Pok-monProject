@@ -20,20 +20,6 @@ async function loadData(id) {
     catchImg.src = pokemon.sprites.other["official-artwork"].front_default;
     return pokemon.stats[3].base_stat;
 }
-const nickname = new Promise((resolve) => {
-    const button = document.getElementById("nickname-form");
-    button.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const nicknameInput = document.getElementById("nickname-input");
-      const nickname = nicknameInput.value;
-      //code set nickname based on input
-      for (let i = 0; i < nics.length; i++) {
-        nics[i].style.display = "none";
-      }   
-      resolve(true);
-      genRandom();
-    });
-  });
   
 catchButton.addEventListener('click', async function(){
     const randomProcent = Math.floor(Math.random() * 98);

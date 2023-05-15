@@ -132,6 +132,10 @@ app.get("/pokedex", (req, res) => {
     res.render('eigenPokemonMultiple');
 });
 
+app.get("/pokedexsingle/:id", (req, res) => {
+
+});
+
 app.get("/login", (req, res) => {
     res.render('login');
 });
@@ -170,6 +174,7 @@ app.get("/pokemon", (req, res) => {
 });
 app.get("/vangen", async (req, res) => {
     const userId = req.session?.user?._id;
+    console.log("test")
     if (userId) {
       const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
       if (allePkmn) {
