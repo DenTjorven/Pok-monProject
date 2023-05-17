@@ -30,9 +30,14 @@
                   <p>SpAtk: <a id="spAtk1"></a></p>
                   <p>SpDef: <a id="spDef1"></a></p>
                   <p>Spd: <a id="spd1"></a></p>
-                <label for="dropdown-1">Choose Your Pokémon</label>
-                <select id="dropdown-1">
-                </select>
+                  <form id="pokemonForm" method="POST" action="/comparedd1">
+                    <label for="dropdown-1">Choose Your Pokémon:</label>
+                    <select id="dropdown-1" name="pokemon">
+                        <% PkmnNamen.forEach(function(name, index) { %>
+                            <option value="<%= PkmnIds[index] %>"><%= name %></option>
+                        <% }); %>
+                    </select>
+                </form>               
             </article>
             </section>
             <div id="a-space"></div>
@@ -48,12 +53,30 @@
                   <p>SpAtk: <a id="spAtk2"></a></p>
                   <p>SpDef: <a id="spDef2"></a></p>
                   <p>Spd: <a id="spd2"></a></p>
-                <label for="dropdown-2">Choose Pokémon:</label>
-            <select id="dropdown-2">
-            </select>
+                  <form id="pokemonForm2" method="POST" action="/comparedd2">
+                    <label for="dropdown-2">Choose Pokémon:</label>
+                    <select id="dropdown-2" name="pokemon">
+                      <% allePkmnNamen.forEach(function(pokemon) { %>
+                        <option value="<%= pokemon.id %>"><%= pokemon.id %>. <%= pokemon.name %></option>
+                      <% }); %>
+                    </select>
+                  </form>                                                                     
             </article>
             </section>
         </div>
      </main>
     <%- include('footer.ejs'); %>
 </body>
+<script>
+  document.addEventListener('change', function(event) {
+    if (event.target && event.target.matches('#dropdown-1')) {
+      document.getElementById('pokemonForm').submit();
+    }
+  });
+
+  document.getElementById('dropdown-2').addEventListener('change', function(event) {
+    if (event.target && event.target.matches('#dropdown-2')) {
+      document.getElementById('pokemonForm2').submit();
+    }
+  });
+</script>
