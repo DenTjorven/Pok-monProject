@@ -124,10 +124,8 @@ article p {
     }
       }
 @media screen and (max-width: 600px) {
-#pkmn-sections{
+#pokemonForm{
     flex-direction: column;
-    
-    
 }
 #Img1,#Img2{
     width: 40%;
