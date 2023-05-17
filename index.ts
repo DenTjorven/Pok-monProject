@@ -14,7 +14,7 @@ app.set('view engine', 'ejs');
 app.set('port', 3000);
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }));
-app.use(session({ // Update this middleware setup
+app.use(session({
     secret: 'your-secret-key',
     resave: false,
     saveUninitialized: false
@@ -104,8 +104,14 @@ const addPokemon = async (pokemon: GevangenPokemon): Promise<void> => {
 async function loadData(allepkmn: GevangenPokemon[]): Promise<{ pkmnData: { pkmnNames: string[], pkmnIds: number[], pkmnImg: string[], pkmnHP: number[], pkmnAtk: number[], pkmnDef: number[], pkmnSpAtk: number[], pkmnSpDef: number[], pkmnSpd: number[] }[], allPokemonList: { id: number, name: string }[] }> {
     const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1118');
     const data = await response.json();
-    const allPokemonList: { id: number, name: string }[] = data.results.map((pokemon: any) => ({ id: pokemon.id, name: pokemon.name }));
-  
+    const allPokemonList = data.results.map((pokemon: { name: string, url: string }) => {
+        const urlParts = pokemon.url.split('/');
+        const id = parseInt(urlParts[urlParts.length - 2]);
+        return {
+          id,
+          name: pokemon.name
+        };
+    });      
     const pkmnPromises = allepkmn.map(async (pokemon) => {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.pokedexNr}`);
       const data = await response.json();
@@ -221,12 +227,25 @@ app.get("/vergelijken", async (req, res) => {
         }
     }
 });
-app.post("/comparedd1", async (req, res) => {
-    const userPkmn: GevangenPokemon[] = []
-    const Nieuwepokemon: GevangenPokemon = { 
-        pokedexNr: req.body.pokemon
+app.post("/comparedd", async (req, res) => {
+    console.log("pkmn 1 = "+req.body.pokemon1);
+    console.log("pkmn 2 = "+req.body.pokemon2);
+    console.log(req.body);
+    const userPkmn1: GevangenPokemon[] = [];
+    const Nieuwepokemon1: GevangenPokemon = {
+        pokedexNr: req.body.pokemon1,
     };
-    userPkmn.push(Nieuwepokemon)
+    
+    const userPkmn2: GevangenPokemon[] = [];
+    const Nieuwepokemon2: GevangenPokemon = {
+        pokedexNr: req.body.pokemon2,
+    };
+
+    userPkmn1.push(Nieuwepokemon1);
+    userPkmn2.push(Nieuwepokemon2);
+    console.log("pkm 1 "+userPkmn1[0].pokedexNr);
+    console.log("pkm 2 "+userPkmn2[0].pokedexNr);
+
     //const { pkmnNames, pkmnImg, pkmnHP, pkmnAtk, pkmnDef, pkmnSpAtk, pkmnSpDef, pkmnSpd, pkmnIds, allPokemonList } = await loadData(userPkmn);
     //res.render('pokemonVergelijken', { PkmnNamen: pkmnNames, PkmnIds: pkmnIds, allePkmnNamen: allPokemonList });
 });

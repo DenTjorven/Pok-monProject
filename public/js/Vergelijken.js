@@ -20,29 +20,6 @@ const dropdown2 = document.getElementById('dropdown-2');
 const pokemon1 = getPokemon(1);
 const pokemon2 = getPokemon(2);
 /**
- *This function populates the second dropdown menu with all the available Pokemon from the API, and the first dropdown menu with the static Pokemon data.
- */
-async function loadData() {
-  const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1118');
-  const data = await response.json();
-  const pokemons = data.results;
-  pokemons.forEach(pokemon => {
-    const option = document.createElement('option');
-    option.value = pokemon.url;
-    console.log(pokemon.url)
-    option.textContent = pokemon.name;
-    dropdown2.appendChild(option);
-  });
-  const staticPKMNURLArray = ["https://pokeapi.co/api/v2/pokemon/1","https://pokeapi.co/api/v2/pokemon/4","https://pokeapi.co/api/v2/pokemon/7"]
-  const staticPKMNNAMEArray = ["bulbasaur","charmander","squirtle"];
-  for (let i = 0; i < staticPKMNURLArray.length; i++) {
-    const option = document.createElement('option');
-    option.value = staticPKMNURLArray[i];
-    option.textContent = staticPKMNNAMEArray[i];
-    dropdown1.appendChild(option);
-  }
-}
-/**
  *This function fetches data for a Pokemon based on a provided URL, and updates the relevant DOM elements for that Pokemon.
  */
 const fetchPokemon = async (call, pokemon) => {
@@ -94,22 +71,6 @@ const comparePokemon = (id1, id2) => {
 /**
  *These are both eventListeners to updated everything based on the selected pokemon
  */  
-dropdown1.addEventListener('change', function() {
-  const selectedValue = dropdown1.value;
-  console.log('Selected value:', selectedValue);
-  fetchPokemon(selectedValue, pokemon1);
-  setTimeout(function() {
-    comparePokemon(1, 2);
-  }, 250); 
-}); 
-dropdown2.addEventListener('change', function() {
-  const selectedValue = dropdown2.value;
-  console.log('Selected value:', selectedValue);
-  fetchPokemon(selectedValue, pokemon2);
-  setTimeout(function() {
-    comparePokemon(1, 2);
-  }, 250); 
-}); 
 function popOut(imageSrc) {
   window.open(imageSrc, "Image Popout", "width=400, height=400");
 }

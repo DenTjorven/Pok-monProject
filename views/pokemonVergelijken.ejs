@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../js/Vergelijken.ts" defer></script>
+    <script src="../js/Vergelijken.js" defer></script>
     <link rel="stylesheet" href="css/nav&footer.css">
     <link rel="stylesheet" href="css/vergekijkPokémon.css">
     <title>PokemonVergelijken</title>
@@ -18,65 +18,55 @@
           <h2 id="WelcomeMessage">A Quick Way to Compare Your Pokémon</h2>
         </section>
         <div id="pkmn-sections">
+          <form id="pokemonForm" method="POST" action="/comparedd">
             <section id="pkmn1">
-            <h2 id="Naam1">Pokémon 1 Naam placeholder</h2>
-            <a href="#">
-            <img id="Img1" src="" class="img-responsive" onclick="popOut(this.src)"></a>
-            <article id="Stats1">
-                <h1>Your Pokémon:</h1>
-                  <p>Hp: <a id="hp1"></a></p>
-                  <p>Atk: <a id="atk1"></a></p>
-                  <p>Def: <a id="def1"></a></p>
-                  <p>SpAtk: <a id="spAtk1"></a></p>
-                  <p>SpDef: <a id="spDef1"></a></p>
-                  <p>Spd: <a id="spd1"></a></p>
-                  <form id="pokemonForm" method="POST" action="/comparedd1">
+              <h2 id="Naam1">Pokémon 1 Naam placeholder</h2>
+              <a href="#">
+              <img id="Img1" src="" class="img-responsive" onclick="popOut(this.src)"></a>
+              <article id="Stats1">
+                  <h1>Your Pokémon:</h1>
+                    <p>Hp: <a id="hp1"></a></p>
+                    <p>Atk: <a id="atk1"></a></p>
+                    <p>Def: <a id="def1"></a></p>
+                    <p>SpAtk: <a id="spAtk1"></a></p>
+                    <p>SpDef: <a id="spDef1"></a></p>
+                    <p>Spd: <a id="spd1"></a></p>
                     <label for="dropdown-1">Choose Your Pokémon:</label>
-                    <select id="dropdown-1" name="pokemon">
-                        <% PkmnNamen.forEach(function(name, index) { %>
-                            <option value="<%= PkmnIds[index] %>"><%= name %></option>
-                        <% }); %>
+                    <select id="dropdown-1" name="pokemon1" onchange="submitForm()">
+                      <% for (let i = 0; i < PkmnNamen.length; i++) { %>
+                        <option value="<%= PkmnIds[i] %>"><%= PkmnIds[i] %>. <%= PkmnNamen[i] %></option>
+                      <% } %>
                     </select>
-                </form>               
-            </article>
+              </article>
             </section>
-            <div id="a-space"></div>
             <section id="pkmn2">
-            <h2 id="Naam2">Pokémon 2 Naam placeholder</h2>
-            <a href="#">
-            <img id="Img2" src="" class="img-responsive" onclick="popOut(this.src)"></a>
-            <article id="Stats2">
-                <h1>Stats Pokémon:</h1>
-                  <p>Hp: <a id="hp2"></a></p>
-                  <p>Atk: <a id="atk2"></a></p>
-                  <p>Def: <a id="def2"></a></p>
-                  <p>SpAtk: <a id="spAtk2"></a></p>
-                  <p>SpDef: <a id="spDef2"></a></p>
-                  <p>Spd: <a id="spd2"></a></p>
-                  <form id="pokemonForm2" method="POST" action="/comparedd2">
+              <h2 id="Naam2">Pokémon 2 Naam placeholder</h2>
+              <a href="#">
+              <img id="Img2" src="" class="img-responsive" onclick="popOut(this.src)"></a>
+              <article id="Stats2">
+                  <h1>Stats Pokémon:</h1>
+                    <p>Hp: <a id="hp2"></a></p>
+                    <p>Atk: <a id="atk2"></a></p>
+                    <p>Def: <a id="def2"></a></p>
+                    <p>SpAtk: <a id="spAtk2"></a></p>
+                    <p>SpDef: <a id="spDef2"></a></p>
+                    <p>Spd: <a id="spd2"></a></p>
                     <label for="dropdown-2">Choose Pokémon:</label>
-                    <select id="dropdown-2" name="pokemon">
+                    <select id="dropdown-2" name="pokemon2" onchange="submitForm()">
                       <% allePkmnNamen.forEach(function(pokemon) { %>
                         <option value="<%= pokemon.id %>"><%= pokemon.id %>. <%= pokemon.name %></option>
                       <% }); %>
                     </select>
-                  </form>                                                                     
-            </article>
+              </article>
             </section>
+          </form>
         </div>
      </main>
     <%- include('footer.ejs'); %>
 </body>
 <script>
-  document.addEventListener('change', function(event) {
-    if (event.target && event.target.matches('#dropdown-1')) {
-      document.getElementById('pokemonForm').submit();
-    }
-  });
-
-  document.getElementById('dropdown-2').addEventListener('change', function(event) {
-    if (event.target && event.target.matches('#dropdown-2')) {
-      document.getElementById('pokemonForm2').submit();
-    }
-  });
+  function submitForm() {
+    const form = document.getElementById('pokemonForm');
+    if (form) { form.submit(); }
+  }
 </script>
