@@ -101,72 +101,72 @@ const addPokemon = async (pokemon: GevangenPokemon): Promise<void> => {
       await client.close();
     }
 };
-async function loadData(allepkmn: GevangenPokemon[]): Promise<{ pkmnNames: string[], pkmnImg: string[], pkmnHP: number[], pkmnAtk: number[], pkmnDef: number[], pkmnSpAtk: number[], pkmnSpDef: number[], pkmnSpd: number[] }> {
-    const promises = allepkmn.map(async (pokemon) => {
+async function loadData(allepkmn: GevangenPokemon[]): Promise<{ pkmnData: { pkmnNames: string[], pkmnIds: number[], pkmnImg: string[], pkmnHP: number[], pkmnAtk: number[], pkmnDef: number[], pkmnSpAtk: number[], pkmnSpDef: number[], pkmnSpd: number[] }[], allPokemonList: { id: number, name: string }[] }> {
+    const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1118');
+    const data = await response.json();
+    const allPokemonList: { id: number, name: string }[] = data.results.map((pokemon: any) => ({ id: pokemon.id, name: pokemon.name }));
+  
+    const pkmnPromises = allepkmn.map(async (pokemon) => {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.pokedexNr}`);
       const data = await response.json();
       const pkmnNames = data.name;
-      const pkmnImg = data.sprites.other["official-artwork"].front_default;
+      const pkmnIds = data.id;
+      const pkmnImg = data.sprites.other['official-artwork'].front_default;
       const pkmnHP = data.stats[0].base_stat;
       const pkmnAtk = data.stats[1].base_stat;
       const pkmnDef = data.stats[2].base_stat;
       const pkmnSpAtk = data.stats[3].base_stat;
       const pkmnSpDef = data.stats[4].base_stat;
       const pkmnSpd = data.stats[5].base_stat;
-      return { pkmnNames, pkmnImg, pkmnHP, pkmnAtk, pkmnDef, pkmnSpAtk, pkmnSpDef, pkmnSpd};
+      return { pkmnNames, pkmnIds, pkmnImg, pkmnHP, pkmnAtk, pkmnDef, pkmnSpAtk, pkmnSpDef, pkmnSpd };
     });
-  
-    const results = await Promise.all(promises);
-  
-    const pkmnNames: string[] = results.map((result) => result.pkmnNames);
-    const pkmnImg: string[] = results.map((result) => result.pkmnImg);
-    const pkmnHP: number[] = results.map((result) => result.pkmnHP);
-    const pkmnAtk: number[] = results.map((result) => result.pkmnAtk);
-    const pkmnDef: number[] = results.map((result) => result.pkmnDef);
-    const pkmnSpAtk: number[] = results.map((result) => result.pkmnSpAtk);
-    const pkmnSpDef: number[] = results.map((result) => result.pkmnSpDef);
-    const pkmnSpd: number[] = results.map((result) => result.pkmnSpd);
-  
-    return { pkmnNames, pkmnImg, pkmnHP, pkmnAtk, pkmnDef, pkmnSpAtk, pkmnSpDef, pkmnSpd};
-}
-  
-  
+    const pkmnResults = await Promise.all(pkmnPromises);
+    const pkmnData = pkmnResults.map((result) => ({
+      pkmnNames: result.pkmnNames,
+      pkmnIds: result.pkmnIds,
+      pkmnImg: result.pkmnImg,
+      pkmnHP: result.pkmnHP,
+      pkmnAtk: result.pkmnAtk,
+      pkmnDef: result.pkmnDef,
+      pkmnSpAtk: result.pkmnSpAtk,
+      pkmnSpDef: result.pkmnSpDef,
+      pkmnSpd: result.pkmnSpd
+    }));
+    return { pkmnData, allPokemonList };
+}    
 app.get("/", (req, res) => {
     req.session.destroy((err) => {
         if (err) {
             console.log(err);
         } else {
-            res.render('algemeneLandingspagina');
+            res.render("algemeneLandingspagina");
         }
     }); 
 });
 app.get("/pokedex", (req, res) => {
     res.render('eigenPokemonMultiple');
 });
-
 app.get("/pokedexsingle/:id", (req, res) => {
 
 });
-
 app.get("/login", (req, res) => {
-    res.render('login');
+    res.render("login");
 });
-app.post('/login', async (req, res) => {
+app.post("/login", async (req, res) => {
     const username: string = req.body.username;
     const password: string = req.body.password;
     const user = await checkUser(username, password);
     if (user) {
         req.session.user = user;
-        res.redirect('/pokemon');
+        res.redirect("/pokemon");
     } else {
-        res.redirect('/error');
+        res.redirect("/error");
     }
 });
-
 app.get("/registration", (req, res) => {
-    res.render('registration');
+    res.render("registration");
 });
-app.post('/registration', async (req, res) => {
+app.post("/registration", async (req, res) => {
     const user: User = {
         firstName: req.body.name,
         lastName: req.body.lastname,
@@ -179,22 +179,24 @@ app.post('/registration', async (req, res) => {
         pokedexNr: req.body['pokemon-choice']
     };
     await addPokemon(pokemon);
-    res.redirect('/login');
+    res.redirect("/login");
 });
 app.get("/pokemon", (req, res) => {
-    res.render('pokemonLandingspagina');
+    res.render("pokemonLandingspagina");
 });
 app.get("/vangen", async (req, res) => {
     const userId = req.session?.user?._id;
     if (userId) {
       const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
       if (allePkmn) {
-        const { pkmnNames, pkmnAtk } = await loadData(allePkmn);
-        res.render('pokemonVangen', { allePkmnNamen: pkmnNames, allePkmnAtk: pkmnAtk });
+        const { pkmnData } = await loadData(allePkmn);
+        const pkmnNames: string[] = pkmnData.flatMap((pkmn) => pkmn.pkmnNames);
+        const pkmnAtk: number[] = pkmnData.flatMap((pkmn) => pkmn.pkmnAtk);
+        res.render("pokemonVangen", { allePkmnNamen: pkmnNames, allePkmnAtk: pkmnAtk });
       }
     }
 });
-app.post('/vangen', async (req, res) => {
+app.post("/vangen", async (req, res) => {
     const user = req.session?.user;
     console.log(user);
     const NieuweID = parseInt(req.body.nicknamevalue);
@@ -205,21 +207,39 @@ app.post('/vangen', async (req, res) => {
         nicknamePokemon: req.body.nickname
     };
     await addPokemon(Nieuwepokemon);
-    res.redirect('/vangen');
+    res.redirect("/vangen");
 });  
 app.get("/vergelijken", async (req, res) => {
     const userId = req.session?.user?._id;
     if (userId) {
-      const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
-      if (allePkmn) {
-        const { pkmnNames, pkmnImg, pkmnHP, pkmnAtk, pkmnDef, pkmnSpAtk, pkmnSpDef, pkmnSpd } = await loadData(allePkmn);
-        res.render('pokemonVergelijken', { allePkmnNamen: pkmnNames, allePkmnImg: pkmnImg, allePkmnHp: pkmnHP, allePkmnAtk: pkmnAtk,allePkmnDef: pkmnDef, allePkmnSpAtk: pkmnSpAtk, allePkmnSpDef: pkmnSpDef, allePkmnSpd: pkmnSpd, });
-      }
+        const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
+        if (allePkmn) {
+            const { pkmnData, allPokemonList } = await loadData(allePkmn);
+            const PkmnNamen = pkmnData.map((data) => data.pkmnNames);
+            const PkmnIds = pkmnData.map((data) => data.pkmnIds);
+            res.render("pokemonVergelijken", { PkmnNamen, PkmnIds, allePkmnNamen: allPokemonList });
+        }
     }
+});
+app.post("/comparedd1", async (req, res) => {
+    const userPkmn: GevangenPokemon[] = []
+    const Nieuwepokemon: GevangenPokemon = { 
+        pokedexNr: req.body.pokemon
+    };
+    userPkmn.push(Nieuwepokemon)
+    //const { pkmnNames, pkmnImg, pkmnHP, pkmnAtk, pkmnDef, pkmnSpAtk, pkmnSpDef, pkmnSpd, pkmnIds, allPokemonList } = await loadData(userPkmn);
+    //res.render('pokemonVergelijken', { PkmnNamen: pkmnNames, PkmnIds: pkmnIds, allePkmnNamen: allPokemonList });
 });
 const main = async () => {
     try {
         await client.connect();
+        /*if (userId) {
+            const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
+            if (allePkmn) {
+              const { pkmnNames, pkmnImg, pkmnHP, pkmnAtk, pkmnDef, pkmnSpAtk, pkmnSpDef, pkmnSpd } = await loadData(allePkmn);
+              res.render('pokemonVergelijken', { allePkmnNamen: pkmnNames, allePkmnImg: pkmnImg, allePkmnHp: pkmnHP, allePkmnAtk: pkmnAtk,allePkmnDef: pkmnDef, allePkmnSpAtk: pkmnSpAtk, allePkmnSpDef: pkmnSpDef, allePkmnSpd: pkmnSpd, });
+            }
+          }*/
         //let databases = await client.db().admin().listDatabases();
 
         //console.log(databases.databases);
@@ -236,7 +256,6 @@ const main = async () => {
         await client.close();
     }
 }
-
 
 app.listen(app.get('port'), ()=>console.log( '[server] http://localhost:' + app.get('port')));
 export {};
