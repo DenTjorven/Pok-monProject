@@ -38,6 +38,17 @@ interface GevangenPokemon {
     pokedexNr: number,
     nicknamePokemon?: string
 }
+interface PokemonData {
+    pkmnNames: string[];
+    pkmnIds: number[];
+    pkmnImg: string[];
+    pkmnHP: number[];
+    pkmnAtk: number[];
+    pkmnDef: number[];
+    pkmnSpAtk: number[];
+    pkmnSpDef: number[];
+    pkmnSpd: number[];
+}
 const checkUser = async (username: string, password: string): Promise<User | null> => {
     try {
       await client.connect();
@@ -164,6 +175,7 @@ app.post("/login", async (req, res) => {
     const user = await checkUser(username, password);
     if (user) {
         req.session.user = user;
+        console.log(req.session.user)
         res.redirect("/pokemon");
     } else {
         res.redirect("/error");
@@ -217,17 +229,21 @@ app.post("/vangen", async (req, res) => {
 });  
 app.get("/vergelijken", async (req, res) => {
     const userId = req.session?.user?._id;
+    console.log(req.session.user)
     if (userId) {
         const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
         if (allePkmn) {
             const { pkmnData, allPokemonList } = await loadData(allePkmn);
             const PkmnNamen = pkmnData.map((data) => data.pkmnNames);
             const PkmnIds = pkmnData.map((data) => data.pkmnIds);
-            res.render("pokemonVergelijken", { PkmnNamen, PkmnIds, allePkmnNamen: allPokemonList });
-        }
+
+            res.render("pokemonVergelijken", {PkmnNamen,PkmnIds,allePkmnNamen: allPokemonList});
+        } 
     }
 });
 app.post("/comparedd", async (req, res) => {
+    console.log(req.session.user)
+    const userId = req.session?.user?._id;
     const userPkmn1: GevangenPokemon[] = [];
     const Nieuwepokemon1: GevangenPokemon = {
         pokedexNr: req.body.pokemon1,
@@ -238,21 +254,67 @@ app.post("/comparedd", async (req, res) => {
     };
     userPkmn1.push(Nieuwepokemon1);
     userPkmn2.push(Nieuwepokemon2);
-    const userId = req.session?.user?._id;
     if (userId) {
         const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
         if (allePkmn) {
             const { pkmnData, allPokemonList } = await loadData(allePkmn);
+            const pkmnData1 = (await loadData(userPkmn1)).pkmnData;
+            const pkmnData2 = (await loadData(userPkmn2)).pkmnData;
+            
             const PkmnNamen = pkmnData.map((data) => data.pkmnNames);
             const PkmnIds = pkmnData.map((data) => data.pkmnIds);
-            const { pkmnData: pkmnData1 } = await loadData(userPkmn1);
-            const { pkmnData: pkmnData2 } = await loadData(userPkmn2); 
-            res.render("pokemonVergelijken", { PkmnNamen, PkmnIds, allePkmnNamen: allPokemonList });
+            
+            const { pkmnNames: PkmnName1, pkmnImg: PkmnImg1, pkmnHP: PkmnHp1, pkmnAtk: PkmnAtk1, pkmnDef: PkmnDef1, pkmnSpAtk: pkmnSpAtk1, pkmnSpDef: pkmnSpDef1, pkmnSpd: PkmnSpd1 } = pkmnData1[0];
+            const { pkmnNames: PkmnName2, pkmnImg: PkmnImg2, pkmnHP: PkmnHp2, pkmnAtk: PkmnAtk2, pkmnDef: PkmnDef2, pkmnSpAtk: pkmnSpAtk2, pkmnSpDef: pkmnSpDef2, pkmnSpd: PkmnSpd2 } = pkmnData2[0];
+
+            const attributes = ['HP', 'Atk', 'Def', 'SpAtk', 'SpDef', 'Spd'];
+            const comparisonResults1: string[] = [];
+            const comparisonResults2: string[] = [];
+
+            if (attributes && attributes.length === 6) {
+            attributes.forEach((attribute, index) => {
+                const stat1 = pkmnData1[0][`pkmn${attribute}` as keyof typeof pkmnData1[0]];
+                const stat2 = pkmnData2[0][`pkmn${attribute}` as keyof typeof pkmnData2[0]];
+
+                if (stat1 > stat2) {
+                comparisonResults1.push('more');
+                comparisonResults2.push('less');
+                } else if (stat1 < stat2) {
+                comparisonResults1.push('less');
+                comparisonResults2.push('more');
+                } else {
+                comparisonResults1.push('even');
+                comparisonResults2.push('even');
+                }
+            });
+            }
+            console.log(comparisonResults1)
+            console.log(comparisonResults2)
+            res.render("pokemonVergelijken", {
+                PkmnNamen,
+                PkmnIds,
+                allePkmnNamen: allPokemonList,
+                comparisonResults1,
+                comparisonResults2,
+                PkmnName1: PkmnName1.toString(),
+                PkmnImg1: PkmnImg1.toString(),
+                PkmnHp1: PkmnHp1.toString(),
+                PkmnAtk1: PkmnAtk1.toString(),
+                PkmnDef1: PkmnDef1.toString(),
+                pkmnSpAtk1: pkmnSpAtk1.toString(),
+                pkmnSpDef1: pkmnSpDef1.toString(),
+                PkmnSpd1: PkmnSpd1.toString(),
+                PkmnName2: PkmnName2.toString(),
+                PkmnImg2: PkmnImg2.toString(),
+                PkmnHp2: PkmnHp2.toString(),
+                PkmnAtk2: PkmnAtk2.toString(),
+                PkmnDef2: PkmnDef2.toString(),
+                pkmnSpAtk2: pkmnSpAtk2.toString(),
+                pkmnSpDef2: pkmnSpDef2.toString(),
+                PkmnSpd2: PkmnSpd2.toString()
+              });              
         }
     }
-
-    //const { pkmnNames, pkmnImg, pkmnHP, pkmnAtk, pkmnDef, pkmnSpAtk, pkmnSpDef, pkmnSpd, pkmnIds, allPokemonList } = await loadData(userPkmn);
-    //res.render('pokemonVergelijken', { PkmnNamen: pkmnNames, PkmnIds: pkmnIds, allePkmnNamen: allPokemonList });
 });
 const main = async () => {
     try {

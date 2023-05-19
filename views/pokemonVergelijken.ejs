@@ -15,52 +15,146 @@
         <section id="welcome-section">
           <h1 id="WelcomeMainMessage">Welcome To PokéPair!</h1>
           <br>
-          <h2 id="WelcomeMessage">A Quick Way to Compare Your Pokémon</h2>
+          <h2 id="WelcomeMessage">A Quick Way to Compare Pokémon</h2>
         </section>
         <div id="pkmn-sections">
           <form id="pokemonForm" method="POST" action="/comparedd">
             <section id="pkmn1">
-              <h2 id="Naam1">Pokémon 1 Naam placeholder</h2>
+              <h2 id="Naam1">
+                <% if (typeof PkmnName1 !== 'undefined') { %>
+                  <%= PkmnName1 %>
+                <% } else { %>
+                  Placeholder Name
+                <% } %>
+              </h2>
               <a href="#">
-              <img id="Img1" src="" class="img-responsive" onclick="popOut(this.src)"></a>
+                <% if (typeof PkmnImg1 !== 'undefined') { %>
+                  <img id="Img1" src="<%= PkmnImg1 %>" class="img-responsive" onclick="popOut(this.src)">
+                <% } else { %>
+                  <img id="Img1" src="placeholder-image.jpg" class="img-responsive" onclick="popOut(this.src)">
+                <% } %>
+              </a>
               <article id="Stats1">
-                  <h1>Your Pokémon:</h1>
-                    <p>Hp: <a id="hp1"></a></p>
-                    <p>Atk: <a id="atk1"></a></p>
-                    <p>Def: <a id="def1"></a></p>
-                    <p>SpAtk: <a id="spAtk1"></a></p>
-                    <p>SpDef: <a id="spDef1"></a></p>
-                    <p>Spd: <a id="spd1"></a></p>
-                    <label for="dropdown-1">Choose Your Pokémon:</label>
-                    <select id="dropdown-1" name="pokemon1" onchange="submitForm()">
-                      <% for (let i = 0; i < PkmnNamen.length; i++) { %>
-                        <option value="<%= PkmnIds[i] %>"><%= PkmnIds[i] %>. <%= PkmnNamen[i] %></option>
-                      <% } %>
-                    </select>
+                <h1>Your Pokémon:</h1>
+                <p>Hp: <a id="hp1" class="<%= typeof comparisonResults1 !== 'undefined' ? comparisonResults1[0] : '' %>">
+                  <% if (typeof PkmnHp1 !== 'undefined') { %>
+                    <%= PkmnHp1 %>
+                  <% } else { %>
+                    --
+                  <% } %>
+                </a></p>
+                <p>Atk: <a id="atk1" class="<%= typeof comparisonResults1 !== 'undefined' ? comparisonResults1[1] : '' %>">
+                  <% if (typeof PkmnAtk1 !== 'undefined') { %>
+                    <%= PkmnAtk1 %>
+                  <% } else { %>
+                    --
+                  <% } %>
+                </a></p>
+                <p>Def: <a id="def1" class="<%= typeof comparisonResults1 !== 'undefined' ? comparisonResults1[2] : '' %>">
+                  <% if (typeof PkmnDef1 !== 'undefined') { %>
+                    <%= PkmnDef1 %>
+                  <% } else { %>
+                    --
+                  <% } %>
+                </a></p>
+                <p>SpAtk: <a id="spAtk1" class="<%= typeof comparisonResults1 !== 'undefined' ? comparisonResults1[3] : '' %>">
+                  <% if (typeof pkmnSpAtk1 !== 'undefined') { %>
+                    <%= pkmnSpAtk1 %>
+                  <% } else { %>
+                    --
+                  <% } %>
+                </a></p>
+                <p>SpDef: <a id="spDef1" class="<%= typeof comparisonResults1 !== 'undefined' ? comparisonResults1[4] : '' %>">
+                  <% if (typeof pkmnSpDef1 !== 'undefined') { %>
+                    <%= pkmnSpDef1 %>
+                  <% } else { %>
+                    --
+                  <% } %>
+                </a></p>
+                <p>Spd: <a id="spd1" class="<%= typeof comparisonResults1 !== 'undefined' ? comparisonResults1[5] : '' %>">
+                  <% if (typeof PkmnSpd1 !== 'undefined') { %>
+                    <%= PkmnSpd1 %>
+                  <% } else { %>
+                    --
+                  <% } %>
+                </a></p>
+                <label for="dropdown-1">Choose Your Pokémon:</label>
+                <select id="dropdown-1" name="pokemon1" onchange="submitForm()">
+                  <% for (let i = 0; i < PkmnNamen.length; i++) { %>
+                    <option value="<%= PkmnIds[i] %>"><%= PkmnIds[i] %>. <%= PkmnNamen[i] %></option>
+                  <% } %>
+                </select>                
               </article>
             </section>
             <section id="pkmn2">
-              <h2 id="Naam2">Pokémon 2 Naam placeholder</h2>
+              <h2 id="Naam2">
+                <% if (typeof PkmnName2 !== 'undefined') { %>
+                  <%= PkmnName2 %>
+                <% } else { %>
+                  Placeholder Name
+                <% } %>
+              </h2>
               <a href="#">
-              <img id="Img2" src="" class="img-responsive" onclick="popOut(this.src)"></a>
+                <% if (typeof PkmnImg2 !== 'undefined') { %>
+                  <img id="Img2" src="<%= PkmnImg2 %>" class="img-responsive" onclick="popOut(this.src)">
+                <% } else { %>
+                  <img id="Img2" src="placeholder-image.jpg" class="img-responsive" onclick="popOut(this.src)">
+                <% } %>
+              </a>
               <article id="Stats2">
-                  <h1>Stats Pokémon:</h1>
-                    <p>Hp: <a id="hp2"></a></p>
-                    <p>Atk: <a id="atk2"></a></p>
-                    <p>Def: <a id="def2"></a></p>
-                    <p>SpAtk: <a id="spAtk2"></a></p>
-                    <p>SpDef: <a id="spDef2"></a></p>
-                    <p>Spd: <a id="spd2"></a></p>
-                    <label for="dropdown-2">Choose Pokémon:</label>
-                    <select id="dropdown-2" name="pokemon2" onchange="submitForm()">
-                      <% allePkmnNamen.forEach(function(pokemon) { %>
-                        <option value="<%= pokemon.id %>"><%= pokemon.id %>. <%= pokemon.name %></option>
-                      <% }); %>
-                    </select>
+                <h1>Stats Pokémon:</h1>
+                <p>Hp: <a id="hp2" class="<%= typeof comparisonResults2 !== 'undefined' ? comparisonResults2[0] : '' %>">
+                  <% if (typeof PkmnHp2 !== 'undefined') { %>
+                    <%= PkmnHp2 %>
+                  <% } else { %>
+                    --
+                  <% } %>
+                </a></p>
+                <p>Atk: <a id="atk2" class="<%= typeof comparisonResults2 !== 'undefined' ? comparisonResults2[1] : '' %>">
+                  <% if (typeof PkmnAtk2 !== 'undefined') { %>
+                    <%= PkmnAtk2 %>
+                  <% } else { %>
+                    --
+                  <% } %>
+                </a></p>
+                <p>Def: <a id="def2" class="<%= typeof comparisonResults2 !== 'undefined' ? comparisonResults2[2] : '' %>">
+                  <% if (typeof PkmnDef2 !== 'undefined') { %>
+                    <%= PkmnDef2 %>
+                  <% } else { %>
+                    --
+                  <% } %>
+                </a></p>
+                <p>SpAtk: <a id="spAtk2" class="<%= typeof comparisonResults2 !== 'undefined' ? comparisonResults2[3] : '' %>">
+                  <% if (typeof pkmnSpAtk2 !== 'undefined') { %>
+                    <%= pkmnSpAtk2 %>
+                  <% } else { %>
+                    --
+                  <% } %>
+                </a></p>
+                <p>SpDef: <a id="spDef2" class="<%= typeof comparisonResults2 !== 'undefined' ? comparisonResults2[4] : '' %>">
+                  <% if (typeof pkmnSpDef2 !== 'undefined') { %>
+                    <%= pkmnSpDef2 %>
+                  <% } else { %>
+                    --
+                  <% } %>
+                </a></p>
+                <p>Spd: <a id="spd2" class="<%= typeof comparisonResults2 !== 'undefined' ? comparisonResults2[5] : '' %>">
+                  <% if (typeof PkmnSpd2 !== 'undefined') { %>
+                    <%= PkmnSpd2 %>
+                  <% } else { %>
+                    --
+                  <% } %>
+                </a></p>
+                <label for="dropdown-2">Choose Pokémon:</label>
+                <select id="dropdown-2" name="pokemon2" onchange="submitForm()">
+                  <% allePkmnNamen.forEach(function(pokemon) { %>
+                    <option value="<%= pokemon.id %>"><%= pokemon.id %>. <%= pokemon.name %></option>
+                  <% }); %>
+                </select>       
               </article>
             </section>
           </form>
-        </div>
+        </div>                                                
      </main>
     <%- include('footer.ejs'); %>
 </body>
@@ -68,5 +162,8 @@
   function submitForm() {
     const form = document.getElementById('pokemonForm');
     if (form) { form.submit(); }
+  }
+  function popOut(imageSrc) {
+  window.open(imageSrc, "Image Popout", "width=400, height=400");
   }
 </script>
