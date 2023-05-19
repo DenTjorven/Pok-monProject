@@ -59,10 +59,6 @@ main{
     background-position: center;
 }
 #pkmn-sections{
-display: flex;
-flex-direction: row;
-justify-content: center;
-align-items: center;
 margin: 6.63em;
 background-color: #f5aa095f;
 border: double #0e2431 5px;
@@ -70,6 +66,12 @@ box-shadow: 0px 0px 10px 5px rgba(245, 170, 9, 0.8),
         0px 0px 10px 5px rgba(14, 36, 49, 0.8),
         0px 0px 10px 5px rgba(194, 23, 33, 0.8),
         0px 0px 10px 5px rgba(143, 0, 74, 0.8);   
+}
+#pokemonForm{
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
 }
 #a-space{
     padding: 0.5em;
@@ -124,10 +126,8 @@ article p {
     }
       }
 @media screen and (max-width: 600px) {
-#pkmn-sections{
+#pokemonForm{
     flex-direction: column;
-    
-    
 }
 #Img1,#Img2{
     width: 40%;

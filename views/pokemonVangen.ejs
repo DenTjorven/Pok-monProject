@@ -23,9 +23,10 @@
             <br>
             <form id="nickname-form" action="/vangen" method="POST">
                 <label id="label-nickname" class="nickname" for="nickname">Give your pokemon a nickname!:</label>
-                <input type="text" id="nickname-input" class="nickname" name="nickname" >
+                <input type="text" id="nickname-input" class="nickname" name="nickname">
+                <input type="hidden" id="nickname-value" name="nicknamevalue" value="">
                 <input id="nickname-button" class="nickname" type="submit" value="Submit">
-            </form>
+            </form>              
         <section id="poke-catch">
             <button id="catch-button"></button>
             <button id="Chose_Your_Pokemon_Dropdown">
