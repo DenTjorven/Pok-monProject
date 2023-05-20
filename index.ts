@@ -8,6 +8,7 @@ app.use(methodOverride('_method'));
 import { MongoClient, ObjectId, InsertOneResult } from "mongodb";
 const uri: string = "mongodb+srv://kirolloswanas:W2Y5kH10NuxLDeQZ@cluster0.eqghavq.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri);
+export const clientex = client; 
 const CryptoJS = require('crypto-js');
 const salt = CryptoJS.lib.WordArray.random().toString();
 app.set('view engine', 'ejs');
@@ -161,7 +162,12 @@ app.get("/", (req, res) => {
     }); 
 });
 app.get("/pokedex", (req, res) => {
-    res.render('eigenPokemonMultiple');
+    const userId = req.session?.user?._id;
+    const id = new ObjectId(userId)
+    const gevangenPok = getPokemonArray(id)
+    res.render('eigenPokemonMultiple', {
+        gevangen:gevangenPok,
+    });
 });
 app.get("/pokedexsingle/:id", (req, res) => {
 
