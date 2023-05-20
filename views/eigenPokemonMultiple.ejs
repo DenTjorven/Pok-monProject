@@ -4,27 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>
-        $(document).ready(function() {
-        var gevangen = $("#gevangen").html();
-    });
-    </script>
-    <script src="../js/BekijkenMultiple.js" defer></script>
+    <script src="../js/BekijkenMultiple.ts" defer></script>
     <link rel="stylesheet" href="css/eigenPBekijkenMultiple.css">
     <link rel="stylesheet" href="/css/nav&footer.css">
     <title>Pokédex</title>
 </head>
-<body>
+<body onload="function fun(){loadData(gevangen)}">
     <%- include('header.ejs'); %>
-    <main>
-        <input type="checkbox" id="ToggleEigenPokemon">
-        <div id="pokedex" class="pokedex-grid">
-            <% if(document.getElementById("ToggleEigenPokemon").value === false){
-                
-            } else {
-
-            }%>
-        </div>
+    <main>        
+        <input type="checkbox" id="ToggleEigenPokemon" onclick="function fun(){loadData(gevangen)}">
+        <div id="pokedex" class="pokedex-grid"></div>
     </main>
     <%- include('footer.ejs'); %>
 </body>

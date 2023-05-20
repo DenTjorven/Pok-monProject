@@ -24,10 +24,10 @@ async function loadData() {
     `;
     dexentry.innerHTML = pokemonOverview;
     return dexentry;
-});
+  });
 
-const entries = await Promise.all(promises);
-entries.forEach((entry) => container.appendChild(entry));
+  const entries = await Promise.all(promises);
+  entries.forEach((entry) => container.appendChild(entry));
 }
 loadData();
   
