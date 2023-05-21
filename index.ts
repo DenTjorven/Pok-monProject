@@ -113,17 +113,22 @@ const addPokemon = async (pokemon: GevangenPokemon): Promise<void> => {
       await client.close();
     }
 };
-async function loadData(allepkmn: GevangenPokemon[]): Promise<{ pkmnData: { pkmnNames: string[], pkmnIds: number[], pkmnImg: string[], pkmnHP: number[], pkmnAtk: number[], pkmnDef: number[], pkmnSpAtk: number[], pkmnSpDef: number[], pkmnSpd: number[] }[], allPokemonList: { id: number, name: string }[] }> {
+async function fetchAllPokemonList(): Promise<{ id: number, name: string, url: string }[]> {
     const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1118');
     const data = await response.json();
     const allPokemonList = data.results.map((pokemon: { name: string, url: string }) => {
-        const urlParts = pokemon.url.split('/');
-        const id = parseInt(urlParts[urlParts.length - 2]);
-        return {
-          id,
-          name: pokemon.name
-        };
-    });      
+      const urlParts = pokemon.url.split('/');
+      const id = parseInt(urlParts[urlParts.length - 2]);
+      return {
+        id,
+        name: pokemon.name,
+        url: pokemon.url
+      };
+    });
+    return allPokemonList;
+  }
+  
+  async function fetchSpecificPokemonData(allepkmn: GevangenPokemon[]): Promise<{pkmnNames: string[],pkmnIds: number[],pkmnImg: string[],pkmnHP: number[],pkmnAtk: number[],pkmnDef: number[],pkmnSpAtk: number[],pkmnSpDef: number[],pkmnSpd: number[]}> {
     const pkmnPromises = allepkmn.map(async (pokemon) => {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.pokedexNr}`);
       const data = await response.json();
@@ -138,20 +143,31 @@ async function loadData(allepkmn: GevangenPokemon[]): Promise<{ pkmnData: { pkmn
       const pkmnSpd = data.stats[5].base_stat;
       return { pkmnNames, pkmnIds, pkmnImg, pkmnHP, pkmnAtk, pkmnDef, pkmnSpAtk, pkmnSpDef, pkmnSpd };
     });
+  
     const pkmnResults = await Promise.all(pkmnPromises);
-    const pkmnData = pkmnResults.map((result) => ({
-      pkmnNames: result.pkmnNames,
-      pkmnIds: result.pkmnIds,
-      pkmnImg: result.pkmnImg,
-      pkmnHP: result.pkmnHP,
-      pkmnAtk: result.pkmnAtk,
-      pkmnDef: result.pkmnDef,
-      pkmnSpAtk: result.pkmnSpAtk,
-      pkmnSpDef: result.pkmnSpDef,
-      pkmnSpd: result.pkmnSpd
-    }));
-    return { pkmnData, allPokemonList };
-}    
+  
+    return {
+      pkmnNames: pkmnResults.map(result => result.pkmnNames),
+      pkmnIds: pkmnResults.map(result => result.pkmnIds),
+      pkmnImg: pkmnResults.map(result => result.pkmnImg),
+      pkmnHP: pkmnResults.map(result => result.pkmnHP),
+      pkmnAtk: pkmnResults.map(result => result.pkmnAtk),
+      pkmnDef: pkmnResults.map(result => result.pkmnDef),
+      pkmnSpAtk: pkmnResults.map(result => result.pkmnSpAtk),
+      pkmnSpDef: pkmnResults.map(result => result.pkmnSpDef),
+      pkmnSpd: pkmnResults.map(result => result.pkmnSpd),
+    };
+  }  
+  async function fetchPokemonData(url: string) {
+    const response = await fetch(url);
+    const data = await response.json();
+    const pokemonData = {
+      id: data.id,
+      name: data.name,
+      img: data.sprites.other['official-artwork'].front_default,
+    };
+    return pokemonData;
+}
 app.get("/", (req, res) => {
     req.session.destroy((err) => {
         if (err) {
@@ -162,42 +178,32 @@ app.get("/", (req, res) => {
     }); 
 });
 app.get("/pokedex", async (req, res) => {
-    const result = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1118');
-    const data = await result.json();
-    const pokemons = data.results;
     const userId = req.session?.user?._id;
-    const id = new ObjectId(userId);
-    const gegvangenPokemon: GevangenPokemon[] | undefined = await getPokemonArray(id);
-
-    const pokPromises = pokemons.map(async (pokemon:any) => {
-        const response = await fetch(pokemon.url);
-        const data = await response.json();
-        const dexentry = document.createElement('a');
-        dexentry.classList.add('link-to-pokemon');
-        dexentry.href = `/eigenPokemonBekijkenIndividual.html?id=${data.id}`;
-        const pokemonOverview = `
-            <div class="pokemon-overview">
-            <section class="number-section">
-                <p>#</p>
-                <h1 class="nr-pokemon">${data.id}</h1>
-            </section> 
-            <section class="section-pokemon">
-                <img class="img-pokemon-one" src="${data.sprites.other['official-artwork'].front_default}" alt="img-pokemon" style="width: 150px;" height="150px">
-                <h2 class="naam-pokemon">${data.name}</h2>
-            </section>
-            </div>
-        `;
-        dexentry.innerHTML = pokemonOverview;
-        return dexentry;
-    });
-    const allPokemon = await Promise.all(pokPromises);
-
-
-
-    res.render('eigenPokemonMultiple', {
-        gevangen:gegvangenPokemon,
-        allemaal: allPokemon
-    });
+    if (userId) {
+        const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
+        if (allePkmn) {
+            const pkmnData = await fetchSpecificPokemonData(allePkmn);
+            const PkmnNamen = pkmnData.pkmnNames
+            const PkmnIds = pkmnData.pkmnIds
+            const PkmnImg = pkmnData.pkmnImg
+            
+            const gevangenPokemon = PkmnNamen.map((name, index) => {
+                return {
+                  id: PkmnIds[index],
+                  name: PkmnNamen[index],
+                  img: PkmnImg[index],
+                };
+            });
+            const allPokemonList = await fetchAllPokemonList();
+            const pokemonDataPromises = allPokemonList.map((pokemon) => fetchPokemonData(pokemon.url));
+            const allPokemonData = await Promise.all(pokemonDataPromises);
+            console.log(allPokemonData);
+              res.render('eigenPokemonMultiple', {
+                gevangen: gevangenPokemon,
+                allemaal: allPokemonData,
+            });
+        }  
+    }
 });
 app.get("/pokedexsingle/:id", (req, res) => {
 
@@ -243,9 +249,9 @@ app.get("/vangen", async (req, res) => {
     if (userId) {
       const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
       if (allePkmn) {
-        const { pkmnData } = await loadData(allePkmn);
-        const pkmnNames: string[] = pkmnData.flatMap((pkmn) => pkmn.pkmnNames);
-        const pkmnAtk: number[] = pkmnData.flatMap((pkmn) => pkmn.pkmnAtk);
+        const pkmnData = await fetchSpecificPokemonData(allePkmn);
+        const pkmnNames = pkmnData.pkmnNames
+        const pkmnAtk = pkmnData.pkmnAtk
         res.render("pokemonVangen", { allePkmnNamen: pkmnNames, allePkmnAtk: pkmnAtk });
       }
     }
@@ -269,10 +275,10 @@ app.get("/vergelijken", async (req, res) => {
     if (userId) {
         const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
         if (allePkmn) {
-            const { pkmnData, allPokemonList } = await loadData(allePkmn);
-            const PkmnNamen = pkmnData.map((data) => data.pkmnNames);
-            const PkmnIds = pkmnData.map((data) => data.pkmnIds);
-
+            const pkmnData = await fetchSpecificPokemonData(allePkmn);
+            const PkmnNamen = pkmnData.pkmnNames
+            const PkmnIds = pkmnData.pkmnIds
+            const allPokemonList = await fetchAllPokemonList();
             res.render("pokemonVergelijken", {PkmnNamen,PkmnIds,allePkmnNamen: allPokemonList});
         } 
     }
@@ -293,15 +299,15 @@ app.post("/comparedd", async (req, res) => {
     if (userId) {
         const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
         if (allePkmn) {
-            const { pkmnData, allPokemonList } = await loadData(allePkmn);
-            const pkmnData1 = (await loadData(userPkmn1)).pkmnData;
-            const pkmnData2 = (await loadData(userPkmn2)).pkmnData;
+            const pkmnData = await fetchSpecificPokemonData(allePkmn);
+            const PkmnNamen = pkmnData.pkmnNames
+            const PkmnIds = pkmnData.pkmnIds
+            const allPokemonList = await fetchAllPokemonList();
+            const pkmnData1 = (await fetchSpecificPokemonData(userPkmn1));
+            const pkmnData2 = (await fetchSpecificPokemonData(userPkmn2));
             
-            const PkmnNamen = pkmnData.map((data) => data.pkmnNames);
-            const PkmnIds = pkmnData.map((data) => data.pkmnIds);
-            
-            const { pkmnNames: PkmnName1, pkmnImg: PkmnImg1, pkmnHP: PkmnHp1, pkmnAtk: PkmnAtk1, pkmnDef: PkmnDef1, pkmnSpAtk: pkmnSpAtk1, pkmnSpDef: pkmnSpDef1, pkmnSpd: PkmnSpd1 } = pkmnData1[0];
-            const { pkmnNames: PkmnName2, pkmnImg: PkmnImg2, pkmnHP: PkmnHp2, pkmnAtk: PkmnAtk2, pkmnDef: PkmnDef2, pkmnSpAtk: pkmnSpAtk2, pkmnSpDef: pkmnSpDef2, pkmnSpd: PkmnSpd2 } = pkmnData2[0];
+            const { pkmnNames: PkmnName1, pkmnImg: PkmnImg1, pkmnHP: PkmnHp1, pkmnAtk: PkmnAtk1, pkmnDef: PkmnDef1, pkmnSpAtk: pkmnSpAtk1, pkmnSpDef: pkmnSpDef1, pkmnSpd: PkmnSpd1 } = pkmnData1;
+            const { pkmnNames: PkmnName2, pkmnImg: PkmnImg2, pkmnHP: PkmnHp2, pkmnAtk: PkmnAtk2, pkmnDef: PkmnDef2, pkmnSpAtk: pkmnSpAtk2, pkmnSpDef: pkmnSpDef2, pkmnSpd: PkmnSpd2 } = pkmnData2;
 
             const attributes = ['HP', 'Atk', 'Def', 'SpAtk', 'SpDef', 'Spd'];
             const comparisonResults1: string[] = [];
@@ -309,8 +315,8 @@ app.post("/comparedd", async (req, res) => {
 
             if (attributes && attributes.length === 6) {
             attributes.forEach((attribute, index) => {
-                const stat1 = pkmnData1[0][`pkmn${attribute}` as keyof typeof pkmnData1[0]];
-                const stat2 = pkmnData2[0][`pkmn${attribute}` as keyof typeof pkmnData2[0]];
+                const stat1 = pkmnData1[`pkmn${attribute}` as keyof typeof pkmnData1];
+                const stat2 = pkmnData2[`pkmn${attribute}` as keyof typeof pkmnData2];
 
                 if (stat1 > stat2) {
                 comparisonResults1.push('more');
