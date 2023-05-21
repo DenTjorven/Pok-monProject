@@ -161,12 +161,42 @@ app.get("/", (req, res) => {
         }
     }); 
 });
-app.get("/pokedex", (req, res) => {
+app.get("/pokedex", async (req, res) => {
+    const result = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1118');
+    const data = await result.json();
+    const pokemons = data.results;
     const userId = req.session?.user?._id;
-    const id = new ObjectId(userId)
-    const gevangenPok = getPokemonArray(id)
+    const id = new ObjectId(userId);
+    const gegvangenPokemon: GevangenPokemon[] | undefined = await getPokemonArray(id);
+
+    const pokPromises = pokemons.map(async (pokemon:any) => {
+        const response = await fetch(pokemon.url);
+        const data = await response.json();
+        const dexentry = document.createElement('a');
+        dexentry.classList.add('link-to-pokemon');
+        dexentry.href = `/eigenPokemonBekijkenIndividual.html?id=${data.id}`;
+        const pokemonOverview = `
+            <div class="pokemon-overview">
+            <section class="number-section">
+                <p>#</p>
+                <h1 class="nr-pokemon">${data.id}</h1>
+            </section> 
+            <section class="section-pokemon">
+                <img class="img-pokemon-one" src="${data.sprites.other['official-artwork'].front_default}" alt="img-pokemon" style="width: 150px;" height="150px">
+                <h2 class="naam-pokemon">${data.name}</h2>
+            </section>
+            </div>
+        `;
+        dexentry.innerHTML = pokemonOverview;
+        return dexentry;
+    });
+    const allPokemon = await Promise.all(pokPromises);
+
+
+
     res.render('eigenPokemonMultiple', {
-        gevangen:gevangenPok,
+        gevangen:gegvangenPokemon,
+        allemaal: allPokemon
     });
 });
 app.get("/pokedexsingle/:id", (req, res) => {

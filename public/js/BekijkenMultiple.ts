@@ -1,5 +1,4 @@
 async function loadData(gevangen:any){
-    console.log(loadData);
     const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1118');
     const data = await response.json();
     const pokemons = data.results;

@@ -4,16 +4,44 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../js/BekijkenMultiple.ts" defer></script>
+
     <link rel="stylesheet" href="css/eigenPBekijkenMultiple.css">
     <link rel="stylesheet" href="/css/nav&footer.css">
     <title>Pokédex</title>
 </head>
-<body onload="function fun(){loadData(gevangen)}">
+<body>
     <%- include('header.ejs'); %>
     <main>        
-        <input type="checkbox" id="ToggleEigenPokemon" onclick="function fun(){loadData(gevangen)}">
-        <div id="pokedex" class="pokedex-grid"></div>
+        <input type="checkbox" id="ToggleEigenPokemon">
+        <div id="pokedex" class="pokedex-grid">
+            <%if (document.getElementById("ToggleEigenPokemon").checked){   %>
+                <%gevangen.forEach(function(pokemon){%>
+                    <div class="pokemon-overview">
+                        <section class="number-section">
+                          <p>#</p>
+                          <h1 class="nr-pokemon"><%pokemon.id%></h1>
+                        </section> 
+                        <section class="section-pokemon">
+                          <img class="img-pokemon-one" src="${data.sprites.other['official-artwork'].front_default}" alt="img-pokemon" style="width: 150px;" height="150px">
+                          <h2 class="naam-pokemon"><%pokemon.name%></h2>
+                        </section>
+                      </div>
+                <%})%>
+            <%} else{%>
+                <%allemaal.forEach(function(pokemon){%>
+                    <div class="pokemon-overview">
+                        <section class="number-section">
+                          <p>#</p>
+                          <h1 class="nr-pokemon"><%pokemon.id%></h1>
+                        </section> 
+                        <section class="section-pokemon">
+                          <img class="img-pokemon-one" src="${data.sprites.other['official-artwork'].front_default}" alt="img-pokemon" style="width: 150px;" height="150px">
+                          <h2 class="naam-pokemon"><%pokemon.name%></h2>
+                        </section>
+                      </div>
+                <%})%>
+            <%}%>
+        </div>
     </main>
     <%- include('footer.ejs'); %>
 </body>
