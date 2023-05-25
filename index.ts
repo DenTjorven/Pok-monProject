@@ -50,6 +50,7 @@ interface PokemonData {
     pkmnSpDef: number[];
     pkmnSpd: number[];
 }
+let allPokemonList: { id: number, name: string, url: string }[];
 const checkUser = async (username: string, password: string): Promise<User | null> => {
     try {
       await client.connect();
@@ -194,7 +195,6 @@ app.get("/pokedex", async (req, res) => {
                   img: PkmnImg[index],
                 };
             });
-            const allPokemonList = await fetchAllPokemonList();
             const pokemonDataPromises = allPokemonList.map((pokemon) => fetchPokemonData(pokemon.url));
             const allPokemonData = await Promise.all(pokemonDataPromises);
             console.log(allPokemonData);
@@ -241,7 +241,8 @@ app.post("/registration", async (req, res) => {
     await addPokemon(pokemon);
     res.redirect("/login");
 });
-app.get("/pokemon", (req, res) => {
+app.get("/pokemon", async (req, res) => {
+    allPokemonList = await fetchAllPokemonList();
     res.render("pokemonLandingspagina");
 });
 app.get("/vangen", async (req, res) => {
