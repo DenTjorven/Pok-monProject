@@ -11,37 +11,32 @@
 </head>
 <body>
     <%- include('header.ejs'); %>
-    <main>        
-        <input type="checkbox" id="ToggleEigenPokemon">
+    <main>
+      <form id="toggleForm" action="/pokedex" method="get">
+        <input type="checkbox" id="ToggleEigenPokemon" name="toggle" value="true" onchange="toggleCheckboxValue()" />
+        <label for="ToggleEigenPokemon">Toggle Eigen Pokemon</label>
+      </form>        
         <div id="pokedex" class="pokedex-grid">
-            <%if (document.getElementById("ToggleEigenPokemon").checked){   %>
-                <%gevangen.forEach(function(pokemon){%>
-                    <div class="pokemon-overview">
-                        <section class="number-section">
-                          <p>#</p>
-                          <h1 class="nr-pokemon"><%pokemon.id%></h1>
-                        </section> 
-                        <section class="section-pokemon">
-                          <img class="img-pokemon-one" src="<%pokemon.img%>" alt="img-pokemon" style="width: 150px;" height="150px">
-                          <h2 class="naam-pokemon"><%pokemon.name%></h2>
-                        </section>
-                      </div>
-                <%})%>
-            <%} else{%>
-                <%allemaal.forEach(function(pokemon){%>
-                    <div class="pokemon-overview">
-                        <section class="number-section">
-                          <p>#</p>
-                          <h1 class="nr-pokemon"><%pokemon.id%></h1>
-                        </section> 
-                        <section class="section-pokemon">
-                          <img class="img-pokemon-one" src="<%pokemon.img%>" alt="img-pokemon" style="width: 150px;" height="150px">
-                          <h2 class="naam-pokemon"><%pokemon.name%></h2>
-                        </section>
-                      </div>
-                <%})%>
-            <%}%>
+          <% pokemon.forEach(function(pokemon) { %>
+            <div class="pokemon-overview">
+              <section class="number-section">
+                <p>#</p>
+                <h1 class="nr-pokemon"><%= pokemon.id %></h1>
+              </section>
+              <section class="section-pokemon">
+                <img class="img-pokemon-one" src="<%= pokemon.img %>" alt="img-pokemon" style="width: 150px;" height="150px" />
+                <h2 class="naam-pokemon"><%= pokemon.name %></h2>
+              </section>
+            </div>
+          <% }); %>
         </div>
     </main>
     <%- include('footer.ejs'); %>
 </body>
+<script>
+  function toggleCheckboxValue() {
+    const checkbox = document.getElementById("ToggleEigenPokemon");
+    checkbox.value = checkbox.checked ? "true" : "false";
+    document.getElementById("toggleForm").submit();
+  }
+</script>
