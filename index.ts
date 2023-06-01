@@ -50,6 +50,11 @@ interface PokemonData {
     pkmnSpDef: number[];
     pkmnSpd: number[];
 }
+interface FetchedPokemonData {
+    id: number;
+    name: string;
+    img: string;
+}
 let allPokemonList: { id: number, name: string, url: string }[];
 let allPokemonData: any[] = [];
 const checkUser = async (username: string, password: string): Promise<User | null> => {
@@ -91,6 +96,7 @@ const getPokemonArray = async (id:ObjectId) => {
         await client.connect();
         let cursor = client.db("Pokemon").collection("GevangenPokemon").find<GevangenPokemon>({user_id: new ObjectId(id)});
         let result = await cursor.toArray();
+        console.log(result)
         return result;
     } catch (e) {
         console.error(e)
@@ -132,6 +138,7 @@ async function fetchAllPokemonList(): Promise<{ id: number, name: string, url: s
   
   async function fetchSpecificPokemonData(allepkmn: GevangenPokemon[]): Promise<{pkmnNames: string[],pkmnIds: number[],pkmnImg: string[],pkmnHP: number[],pkmnAtk: number[],pkmnDef: number[],pkmnSpAtk: number[],pkmnSpDef: number[],pkmnSpd: number[]}> {
     const pkmnPromises = allepkmn.map(async (pokemon) => {
+      console.log(pokemon.pokedexNr);
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.pokedexNr}`);
       const data = await response.json();
       const pkmnNames = data.name;
@@ -160,7 +167,8 @@ async function fetchAllPokemonList(): Promise<{ id: number, name: string, url: s
       pkmnSpd: pkmnResults.map(result => result.pkmnSpd),
     };
   }  
-async function fetchPokemonData(url: string) {
+async function fetchPokemonData(index:number) {
+    const url = `https://pokeapi.co/api/v2/pokemon/${index}`;
     const response = await fetch(url);
     const data = await response.json();
     const pokemonData = {
@@ -170,31 +178,19 @@ async function fetchPokemonData(url: string) {
     };
     return pokemonData;
 }
-async function fetchAllPokemonData() {
-    const batchSize = 400;
-    let remainingPokemonList = [...allPokemonList];
-    allPokemonData = [];
   
-    try {
-      while (remainingPokemonList.length > 0) {
-        const batch = remainingPokemonList.splice(0, batchSize);
-        const pokemonDataPromises = batch.map((pokemon) =>
-          fetchPokemonData(pokemon.url).catch((error) => {
-            console.error('Error fetching Pokémon data:', error);
-          })
-        );
-        const batchPokemonData = await Promise.all(pokemonDataPromises);
+async function fetchAllPokemonData(startIndex: number, endIndex: number): Promise<FetchedPokemonData[]> {
+    const indices = Array.from({ length: endIndex - startIndex + 1 }, (_, index) => startIndex + index).filter((index) => index !== 0);
+    const pokemonDataPromises = indices.map((id) =>
+      fetchPokemonData(id).catch((error) => {
+        console.error('Error fetching Pokémon data:', error);
+        return null; // Return null in case of error
+      })
+    );
+    const allPokemonData = await Promise.all(pokemonDataPromises);
+    return allPokemonData.filter((data): data is FetchedPokemonData => data !== null) as FetchedPokemonData[]; // Use type assertion
+}
   
-        allPokemonData = allPokemonData.concat(batchPokemonData);
-  
-        if (remainingPokemonList.length === 0) {
-          break;
-        }
-      }
-    } catch (error) {
-      console.error('Error in fetchAllPokemonData:', error);
-    }
-  }
   
 app.get("/", async (req, res) => {
     req.session.destroy((err) => {
@@ -205,74 +201,100 @@ app.get("/", async (req, res) => {
         }
     }); 
 });
-app.get("/pokedex", async (req, res) => {
-    const userId = req.session?.user?._id;
-    if (userId) {
-        let toggleState = req.query.toggle === 'true';
-        toggleState = !toggleState;
+let gevangenPokemon: FetchedPokemonData[] = [];
+let toggleCheckbox: boolean = false;
+let currentPage: number = 1;
 
-        if (toggleState) {
-            const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
-            if (allePkmn) {
-                const pkmnData = await fetchSpecificPokemonData(allePkmn);
-                const PkmnNamen = pkmnData.pkmnNames;
-                const PkmnIds = pkmnData.pkmnIds;
-                const PkmnImg = pkmnData.pkmnImg;
-                const gevangenPokemon = PkmnNamen.map((name, index) => {
-                    return {
-                        id: PkmnIds[index],
-                        name: PkmnNamen[index],
-                        img: PkmnImg[index],
-                    };
-                });
-                res.render('eigenPokemonMultiple', { pokemon: gevangenPokemon, toggle: toggleState });
-                return;
-            }
-        } else {
-            res.render('eigenPokemonMultiple', { pokemon: allPokemonData, toggle: toggleState });
-            return;
-        }
+app.get("/pokedex", async (req, res) => {
+  const userId = req.session?.user?._id;
+  const toggleHidden = req.query.toggleHidden;
+  
+  if (toggleHidden && !toggleCheckbox) {
+    toggleCheckbox = true;
+  }
+  
+  if (userId) {
+    if (toggleCheckbox) {
+      const page = parseInt(req.query.page as string) || 1;
+      const pageSize = 52; // Number of Pokemon per page
+
+      // Calculate the start and end indices for the current page
+      const startIndex = (page - 1) * pageSize;
+      const endIndex = startIndex + pageSize - 1;
+
+      // Fetch Pokemon data based on indices
+      const pokemon = await fetchAllPokemonData(startIndex, endIndex);
+      currentPage = page;
+
+      res.render('eigenPokemonMultiple', { pokemon, toggle: toggleCheckbox, page: currentPage });
+      toggleCheckbox = false;
+      return;
+    } else {
+      const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
+      if (allePkmn) {
+        const pkmnData = await fetchSpecificPokemonData(allePkmn);
+        const PkmnNamen = pkmnData.pkmnNames;
+        const PkmnIds = pkmnData.pkmnIds;
+        const PkmnImg = pkmnData.pkmnImg;
+        gevangenPokemon = PkmnNamen.map((name, index) => {
+          return {
+            id: PkmnIds[index],
+            name: PkmnNamen[index],
+            img: PkmnImg[index],
+          };
+        });
+        res.render('eigenPokemonMultiple', { pokemon: gevangenPokemon, toggle: toggleCheckbox, page: currentPage });
+        toggleCheckbox = true;
+        return;
+      }
     }
-    res.render('eigenPokemonMultiple', { pokemon: [], toggle: false });
+  }
+  res.render('eigenPokemonMultiple', { pokemon: [], toggle: false });
 });
 
 
 app.post("/pokedex", async (req, res) => {
-    const userId = req.session?.user?._id;
-    if (userId) {
-        const toggleState = req.query.toggle === 'true';
-        let pokemonData;
-        if (toggleState) {
-            const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
-            if (allePkmn) {
-                const pkmnData = await fetchSpecificPokemonData(allePkmn);
-                const PkmnNamen = pkmnData.pkmnNames;
-                const PkmnIds = pkmnData.pkmnIds;
-                const PkmnImg = pkmnData.pkmnImg;
-
-                const gevangenPokemon = PkmnNamen.map((name, index) => {
-                    return {
-                        id: PkmnIds[index],
-                        name: PkmnNamen[index],
-                        img: PkmnImg[index],
-                    };
-                });
-                pokemonData = gevangenPokemon;
-            }
-        } else {
-            pokemonData = allPokemonData;
-        }
-        res.render('eigenPokemonMultiple', { pokemon: pokemonData });
+  const userId = req.session?.user?._id;
+  
+  if (userId) {
+    let toggleState = toggleCheckbox;
+    const toggleHidden = req.body.toggleHidden;
+    
+    if (toggleHidden && !toggleState) {
+      toggleState = true;
     }
+    
+    if (toggleState) {
+      const page = parseInt(req.body.page as string) || 1;
+      const pageSize = 52; // Number of Pokemon per page
+
+      // Calculate the start and end indices for the current page
+      const startIndex = (page - 1) * pageSize;
+      const endIndex = startIndex + pageSize - 1;
+
+      // Fetch Pokemon data based on indices
+      const pokemonData = await fetchAllPokemonData(startIndex, endIndex);
+      currentPage = page;
+
+      res.render('eigenPokemonMultiple', { pokemon: pokemonData, toggle: toggleState, page: currentPage });
+      toggleCheckbox = false;
+      return;
+    } else {
+      res.render('eigenPokemonMultiple', { pokemon: gevangenPokemon, toggle: toggleState, page: currentPage });
+      toggleCheckbox = true;
+      return;
+    }
+  }
 });
+
+  
+  
 
 app.get("/pokedexsingle/:id", (req, res) => {
 
 });
 app.get("/login", async (req, res) => {
     console.log(allPokemonList);
-    await fetchAllPokemonData();
-    console.log(allPokemonData);
     res.render("login");
 });
 app.post("/login", async (req, res) => {

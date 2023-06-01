@@ -12,8 +12,8 @@
 <body>
     <%- include('header.ejs'); %>
     <main>
-      <form id="toggleForm" action="/pokedex" method="get">
-        <input type="checkbox" id="ToggleEigenPokemon" name="toggle" value="true" onchange="toggleCheckboxValue()" />
+      <form id="toggleForm" action="/pokedex" method="post">
+        <input type="checkbox" id="ToggleEigenPokemon" name="toggle" onchange="toggleCheckboxValue()" />
         <label for="ToggleEigenPokemon">Toggle Eigen Pokemon</label>
       </form>        
         <div id="pokedex" class="pokedex-grid">
@@ -30,13 +30,24 @@
             </div>
           <% }); %>
         </div>
+
+        <% if (toggle) { %>
+          <input type="hidden" name="toggleHidden" value="true">
+          <div class="pagination">
+            <% if (page > 1) { %>
+              <a href="/pokedex?page=<%= page - 1 %>&toggleHidden=true">Previous</a>
+            <% } %>
+        
+            <% if (pokemon.length >= 50) { %>
+              <a href="/pokedex?page=<%= page + 1 %>&toggleHidden=true">Next</a>
+            <% } %>
+        <% } %>              
     </main>
     <%- include('footer.ejs'); %>
 </body>
 <script>
   function toggleCheckboxValue() {
     const checkbox = document.getElementById("ToggleEigenPokemon");
-    checkbox.value = checkbox.checked ? "true" : "false";
     document.getElementById("toggleForm").submit();
   }
 </script>
