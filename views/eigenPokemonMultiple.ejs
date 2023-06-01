@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../js/BekijkenMultiple.js" defer></script>
+
     <link rel="stylesheet" href="css/eigenPBekijkenMultiple.css">
     <link rel="stylesheet" href="/css/nav&footer.css">
     <title>Pokédex</title>
@@ -12,7 +12,42 @@
 <body>
     <%- include('header.ejs'); %>
     <main>
-        <div id="pokedex" class="pokedex-grid"></div>
+      <form id="toggleForm" action="/pokedex" method="post">
+        <input type="checkbox" id="ToggleEigenPokemon" name="toggle" onchange="toggleCheckboxValue()" />
+        <label for="ToggleEigenPokemon">Toggle Eigen Pokemon</label>
+      </form>        
+        <div id="pokedex" class="pokedex-grid">
+          <% pokemon.forEach(function(pokemon) { %>
+            <div class="pokemon-overview">
+              <section class="number-section">
+                <p>#</p>
+                <h1 class="nr-pokemon"><%= pokemon.id %></h1>
+              </section>
+              <section class="section-pokemon">
+                <img class="img-pokemon-one" src="<%= pokemon.img %>" alt="img-pokemon" style="width: 150px;" height="150px" />
+                <h2 class="naam-pokemon"><%= pokemon.name %></h2>
+              </section>
+            </div>
+          <% }); %>
+        </div>
+
+        <% if (toggle) { %>
+          <input type="hidden" name="toggleHidden" value="true">
+          <div class="pagination">
+            <% if (page > 1) { %>
+              <a href="/pokedex?page=<%= page - 1 %>&toggleHidden=true">Previous</a>
+            <% } %>
+        
+            <% if (pokemon.length >= 50) { %>
+              <a href="/pokedex?page=<%= page + 1 %>&toggleHidden=true">Next</a>
+            <% } %>
+        <% } %>              
     </main>
     <%- include('footer.ejs'); %>
 </body>
+<script>
+  function toggleCheckboxValue() {
+    const checkbox = document.getElementById("ToggleEigenPokemon");
+    document.getElementById("toggleForm").submit();
+  }
+</script>
