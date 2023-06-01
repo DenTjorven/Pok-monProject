@@ -82,3 +82,36 @@ body {
     color: #F5AA09;
     text-decoration: none;
   }
+  .pagination
+  {
+    margin-top: 1em;
+  }
+  #toggleForm
+  {
+    margin: 1em;
+    background-color:#c21721;
+    border:4px double rgba(128, 128, 128, 0.701);
+    border-radius: 2%;
+  }
+  #next
+  {
+    color: #F5AA09;
+    transition: all 0.3 ease-in-out;
+  }
+  #next:hover
+  {
+    font-size: larger;
+    color: #c21721;
+    letter-spacing: 0.1em;
+  }
+  #previous
+  {
+    color: #F5AA09;
+    transition: all 0.3s ease-in-out;
+  }
+  #previous:hover
+  {
+    font-size: large;
+    color: #c21721;
+    letter-spacing: 0.1em;
+  }

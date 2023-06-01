@@ -35,11 +35,11 @@
           <input type="hidden" name="toggleHidden" value="true">
           <div class="pagination">
             <% if (page > 1) { %>
-              <a href="/pokedex?page=<%= page - 1 %>&toggleHidden=true">Previous</a>
+              <a id="previous" href="/pokedex?page=<%= page - 1 %>&toggleHidden=true">Previous</a>
             <% } %>
         
             <% if (pokemon.length >= 50) { %>
-              <a href="/pokedex?page=<%= page + 1 %>&toggleHidden=true">Next</a>
+              <a id="next" href="/pokedex?page=<%= page + 1 %>&toggleHidden=true">Next</a>
             <% } %>
         <% } %>              
     </main>
