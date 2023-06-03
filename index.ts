@@ -101,7 +101,6 @@ const getPokemonArray = async (id:ObjectId) => {
         await client.connect();
         let cursor = client.db("Pokemon").collection("GevangenPokemon").find<GevangenPokemon>({user_id: new ObjectId(id)});
         let result = await cursor.toArray();
-        console.log(result)
         return result;
     } catch (e) {
         console.error(e)
@@ -363,7 +362,6 @@ app.get("/pokedexsingle/:id", async (req, res) => {
 });
 
 app.get("/login", async (req, res) => {
-    console.log(allPokemonList);
     res.render("login");
 });
 app.post("/login", async (req, res) => {
@@ -372,7 +370,6 @@ app.post("/login", async (req, res) => {
     const user = await checkUser(username, password);
     if (user) {
         req.session.user = user;
-        console.log(req.session.user)
         res.redirect("/pokemon");
     } else {
         res.redirect("/error");
@@ -414,9 +411,7 @@ app.get("/vangen", async (req, res) => {
 });
 app.post("/vangen", async (req, res) => {
     const user = req.session?.user;
-    console.log(user);
     const NieuweID = parseInt(req.body.nicknamevalue);
-    console.log(NieuweID);
     const Nieuwepokemon: GevangenPokemon = {
         user_id: user?._id, 
         pokedexNr: NieuweID,
@@ -427,7 +422,6 @@ app.post("/vangen", async (req, res) => {
 });  
 app.get("/vergelijken", async (req, res) => {
     const userId = req.session?.user?._id;
-    console.log(req.session.user)
     if (userId) {
         const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
         if (allePkmn) {
@@ -440,7 +434,6 @@ app.get("/vergelijken", async (req, res) => {
     }
 });
 app.post("/comparedd", async (req, res) => {
-    console.log(req.session.user)
     const userId = req.session?.user?._id;
     const userPkmn1: GevangenPokemon[] = [];
     const Nieuwepokemon1: GevangenPokemon = {
@@ -486,8 +479,6 @@ app.post("/comparedd", async (req, res) => {
                 }
             });
             }
-            console.log(comparisonResults1)
-            console.log(comparisonResults2)
             res.render("pokemonVergelijken", {
                 PkmnNamen,
                 PkmnIds,
