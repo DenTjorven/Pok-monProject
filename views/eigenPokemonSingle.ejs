@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../js/BekijkenSingle.js" defer></script>
-    <link rel="stylesheet" href="css/eigenPBekijkenMultiple.css">
-    <link rel="stylesheet" href="css/individual.css">
-    <link rel="stylesheet" href="css/nav&footer.css">
+    <link rel="stylesheet" href="/css/individual.css">
+    <link rel="stylesheet" href="/css/eigenPBekijkenMultiple.css">
+    <link rel="stylesheet" href="/css/nav&footer.css">
     <title>PokédexSingle</title>
 </head>
 <body>
@@ -16,36 +15,41 @@
         <div class="pokemon-overview">               
             <section class="number-section">  
                 <p>#</p>
-                <h1 class="nr-pokemon" id="nummer">1130</h1>
+                <h1 class="nr-pokemon" id="nummer"><%= PkmnId1 %></h1>
                 <div id="a-div"></div>
-                <h2 class="naam-pokemon" id="naam">Charmender</h2>
+                <h2 class="naam-pokemon" id="naam"><%= PkmnName1 %></h2>
             </section> 
             <section class="section-pokemon">
-                <img class="img-pokemon-one" id="image" src="/images/assets_Register_Login/charmender.png" alt="img-pokemon" style="width: 150px;" height="150px">       
+                <img class="img-pokemon-one" id="image" src="<%= PkmnImg1 %>" alt="img-pokemon" style="width: 150px;" height="150px">       
             </section>
         </div>
 
         <div id="pokemon-stats-evolutie">
             <section id="stats-section">
                 <article id="Stats">
-                     <h3>Stats Pokémon:</h3>
-                     <p>Hp: <a id="hp"></a></p>
-                     <p>Atk: <a id="atk"></a></p>
-                     <p>Def: <a id="def"></a></p>
-                     <p>SpAtk: <a id="spAtk"></a></p>
-                     <p>SpDef: <a id="spDef"></a></p>
-                     <p>Spd: <a id="spd"></a></p>
+                  <h3>Stats Pokémon:</h3>
+                  <p>Hp: <a id="hp"><%= PkmnHp1 %></a></p>
+                  <p>Atk: <a id="atk"><%= PkmnAtk1 %></a></p>
+                  <p>Def: <a id="def"><%= PkmnDef1 %></a></p>
+                  <p>SpAtk: <a id="spAtk"><%= pkmnSpAtk1 %></a></p>
+                  <p>SpDef: <a id="spDef"><%= pkmnSpDef1 %></a></p>
+                  <p>Spd: <a id="spd"><%= PkmnSpd1 %></a></p>
                 </article>
-            </section>
+            </section>              
             <section id="evolution-section">
                 <h4 id="title-evolution-section">Evolution Path</h4>
-            <article>
-                <a id="base" href=""><img id="original-pokemon" src="/images/assets_Register_Login/charmender.png" alt="original-pokemon" style="width: 50px; height: 50px;" ></a>
-                <p id="first-evolution-arrow">⤑</p>
-                <a id="first" href=""><img id="first-evolution-img" src="/images/assets_evolution/Charmeleon.png" alt="first-evolution" style="width: 50px; height: 50px;"></a>
-                <p id="second-evolution-arrow">⤑</p> 
-                <a id="second" href=""><img id="second-evolution-img" src="/images/assets_evolution/Charizard.png" alt="second-evolution" style="width: 50px; height: 50px;"></a>
-            </article>
+                <article>
+                    <a id="base" href="/pokedexsingle/<%= PkmnId1 %>"><img id="original-pokemon" src="<%= evolutionChainData.images[0] %>" alt="original-pokemon" style="width: 50px; height: 50px; display: inline-block;"></a>
+                    <% if (evolutionChainData.evolvesToCount >= 2) { %>
+                      <p id="first-evolution-arrow" style="display: inline-block;">⤑</p>
+                      <a id="first" href="/pokedexsingle/<%= evolutionChainData.evolvesToIds[0] %>"><img id="first-evolution-img" src="<%= evolutionChainData.images[1] %>" alt="first-evolution" style="width: 50px; height: 50px; display: inline-block;"></a>
+                      <p id="second-evolution-arrow" style="display: inline-block;">⤑</p> 
+                      <a id="second" href="/pokedexsingle/<%= evolutionChainData.evolvesToIds[1] %>"><img id="second-evolution-img" src="<%= evolutionChainData.images[2] %>" alt="second-evolution" style="width: 50px; height: 50px; display: inline-block;"></a>
+                    <% } else if (evolutionChainData.evolvesToCount >= 1) { %>
+                      <p id="first-evolution-arrow" style="display: inline-block;">⤑</p>
+                      <a id="first" href="/pokedexsingle/<%= evolutionChainData.evolvesToIds[0] %>"><img id="first-evolution-img" src="<%= evolutionChainData.images[1] %>" alt="first-evolution" style="width: 50px; height: 50px; display: inline-block;"></a>
+                    <% } %>
+                </article>                                                  
          </section>
         </div>
     </main>

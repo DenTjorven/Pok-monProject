@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="css/eigenPBekijkenMultiple.css">
+    <link rel="stylesheet" href="/css/eigenPBekijkenMultiple.css">
     <link rel="stylesheet" href="/css/nav&footer.css">
     <title>Pokédex</title>
 </head>
@@ -24,7 +23,9 @@
                 <h1 class="nr-pokemon"><%= pokemon.id %></h1>
               </section>
               <section class="section-pokemon">
-                <img class="img-pokemon-one" src="<%= pokemon.img %>" alt="img-pokemon" style="width: 150px;" height="150px" />
+                <a href="/pokedexsingle/<%= pokemon.id %>">
+                  <img class="img-pokemon-one" src="<%= pokemon.img %>" alt="img-pokemon" style="width: 150px;" height="150px" />
+                </a>
                 <h2 class="naam-pokemon"><%= pokemon.name %></h2>
               </section>
             </div>
