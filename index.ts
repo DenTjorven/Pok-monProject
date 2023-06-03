@@ -55,6 +55,11 @@ interface FetchedPokemonData {
     name: string;
     img: string;
 }
+interface EvolutionChainData {
+  evolvesToCount: number;
+  evolvesToIds: (number | null)[];
+  images: string[];
+}
 let allPokemonList: { id: number, name: string, url: string }[];
 let allPokemonData: any[] = [];
 const checkUser = async (username: string, password: string): Promise<User | null> => {
@@ -107,9 +112,6 @@ const getPokemonArray = async (id:ObjectId) => {
 const addPokemon = async (pokemon: GevangenPokemon): Promise<void> => {
     try {
       await client.connect();
-      console.log(pokemon.nicknamePokemon);
-      console.log(pokemon.pokedexNr);
-      console.log(pokemon.user_id);
       if(pokemon.nicknamePokemon == null){
         pokemon.nicknamePokemon = "";
       }
@@ -138,7 +140,6 @@ async function fetchAllPokemonList(): Promise<{ id: number, name: string, url: s
   
   async function fetchSpecificPokemonData(allepkmn: GevangenPokemon[]): Promise<{pkmnNames: string[],pkmnIds: number[],pkmnImg: string[],pkmnHP: number[],pkmnAtk: number[],pkmnDef: number[],pkmnSpAtk: number[],pkmnSpDef: number[],pkmnSpd: number[]}> {
     const pkmnPromises = allepkmn.map(async (pokemon) => {
-      console.log(pokemon.pokedexNr);
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.pokedexNr}`);
       const data = await response.json();
       const pkmnNames = data.name;
@@ -184,14 +185,72 @@ async function fetchAllPokemonData(startIndex: number, endIndex: number): Promis
     const pokemonDataPromises = indices.map((id) =>
       fetchPokemonData(id).catch((error) => {
         console.error('Error fetching Pokémon data:', error);
-        return null; // Return null in case of error
+        return null;
       })
     );
     const allPokemonData = await Promise.all(pokemonDataPromises);
     return allPokemonData.filter((data): data is FetchedPokemonData => data !== null) as FetchedPokemonData[]; // Use type assertion
 }
+
+async function getEvolutionChainData(id: number): Promise<EvolutionChainData> {
+  const evolutionChainNumber = await getEvolutionChainNumber(id);
+  const response = await fetch(`https://pokeapi.co/api/v2/evolution-chain/${evolutionChainNumber}`);
+  const data = await response.json();
+  const evolvesToCount = countEvolutions(data.chain);
+  const evolvesToIds = getEvolutionsIds(data.chain);
+  const images = await fetchPokemonImages([id, ...evolvesToIds]);
   
-  
+  return {
+    evolvesToCount,
+    evolvesToIds,
+    images
+  };
+}
+
+async function getEvolutionChainNumber(id: number): Promise<number> {
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}/`);
+  const data = await response.json();
+  const evolutionChainUrl = data.evolution_chain.url;
+  const evolutionChainNumber = parseInt(evolutionChainUrl.split('/').slice(-2, -1)[0]);
+  return evolutionChainNumber;
+}
+
+function countEvolutions(chain: any): number {
+  let count = 0;
+  if (chain.evolves_to.length === 0) {
+    return count;
+  }
+  count += chain.evolves_to.length;
+  chain.evolves_to.forEach((evolution: any) => {
+    count += countEvolutions(evolution);
+  });
+  return count;
+}
+
+function getEvolutionsIds(chain: any): (number | null)[] {
+  const ids: (number | null)[] = [];
+  if (chain.evolves_to.length > 0) {
+    chain.evolves_to.forEach((evolution: any) => {
+      ids.push(parseInt(evolution.species.url.split('/').slice(-2, -1)[0]));
+      ids.push(...getEvolutionsIds(evolution));
+    });
+  }
+  return ids;
+}
+
+async function fetchPokemonImages(ids: (number | null)[]): Promise<string[]> {
+  const imagePromises = ids.map(async (id) => {
+    if (id !== null) {
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+      const data = await response.json();
+      return data.sprites.other['official-artwork'].front_default;
+    }
+    return '';
+  });
+
+  return Promise.all(imagePromises);
+}
+
 app.get("/", async (req, res) => {
     req.session.destroy((err) => {
         if (err) {
@@ -204,7 +263,6 @@ app.get("/", async (req, res) => {
 let gevangenPokemon: FetchedPokemonData[] = [];
 let toggleCheckbox: boolean = false;
 let currentPage: number = 1;
-
 app.get("/pokedex", async (req, res) => {
   const userId = req.session?.user?._id;
   const toggleHidden = req.query.toggleHidden;
@@ -216,16 +274,11 @@ app.get("/pokedex", async (req, res) => {
   if (userId) {
     if (toggleCheckbox) {
       const page = parseInt(req.query.page as string) || 1;
-      const pageSize = 52; // Number of Pokemon per page
-
-      // Calculate the start and end indices for the current page
+      const pageSize = 52;
       const startIndex = (page - 1) * pageSize;
       const endIndex = startIndex + pageSize - 1;
-
-      // Fetch Pokemon data based on indices
       const pokemon = await fetchAllPokemonData(startIndex, endIndex);
       currentPage = page;
-
       res.render('eigenPokemonMultiple', { pokemon, toggle: toggleCheckbox, page: currentPage });
       toggleCheckbox = false;
       return;
@@ -266,16 +319,11 @@ app.post("/pokedex", async (req, res) => {
     
     if (toggleState) {
       const page = parseInt(req.body.page as string) || 1;
-      const pageSize = 52; // Number of Pokemon per page
-
-      // Calculate the start and end indices for the current page
+      const pageSize = 53;
       const startIndex = (page - 1) * pageSize;
       const endIndex = startIndex + pageSize - 1;
-
-      // Fetch Pokemon data based on indices
       const pokemonData = await fetchAllPokemonData(startIndex, endIndex);
       currentPage = page;
-
       res.render('eigenPokemonMultiple', { pokemon: pokemonData, toggle: toggleState, page: currentPage });
       toggleCheckbox = false;
       return;
@@ -287,12 +335,33 @@ app.post("/pokedex", async (req, res) => {
   }
 });
 
-  
-  
-
-app.get("/pokedexsingle/:id", (req, res) => {
-
+app.get("/pokedexsingle/:id", async (req, res) => {
+  const userId = req.session?.user?._id;
+  const id = req.params.id;
+  const userPkmn1: GevangenPokemon[] = [];
+  const Nieuwepokemon1: GevangenPokemon = {
+      pokedexNr: parseInt(id),
+  };
+  userPkmn1.push(Nieuwepokemon1);
+  if (userId) {
+    const pkmnData1 = (await fetchSpecificPokemonData(userPkmn1));
+    const evolutionChainData = await getEvolutionChainData(parseInt(id));
+    const { pkmnNames: PkmnName1, pkmnImg: PkmnImg1, pkmnHP: PkmnHp1, pkmnAtk: PkmnAtk1, pkmnDef: PkmnDef1, pkmnSpAtk: pkmnSpAtk1, pkmnSpDef: pkmnSpDef1, pkmnSpd: PkmnSpd1 } = pkmnData1; 
+    res.render("eigenPokemonSingle", {
+        PkmnId1: id,
+        PkmnName1: PkmnName1.toString(),
+        PkmnImg1: PkmnImg1.toString(),
+        PkmnHp1: PkmnHp1.toString(),
+        PkmnAtk1: PkmnAtk1.toString(),
+        PkmnDef1: PkmnDef1.toString(),
+        pkmnSpAtk1: pkmnSpAtk1.toString(),
+        pkmnSpDef1: pkmnSpDef1.toString(),
+        PkmnSpd1: PkmnSpd1.toString(),
+        evolutionChainData: evolutionChainData
+      });
+  }
 });
+
 app.get("/login", async (req, res) => {
     console.log(allPokemonList);
     res.render("login");
@@ -445,32 +514,6 @@ app.post("/comparedd", async (req, res) => {
         }
     }
 });
-const main = async () => {
-    try {
-        await client.connect();
-        /*if (userId) {
-            const allePkmn: GevangenPokemon[] | undefined = await getPokemonArray(userId);
-            if (allePkmn) {
-              const { pkmnNames, pkmnImg, pkmnHP, pkmnAtk, pkmnDef, pkmnSpAtk, pkmnSpDef, pkmnSpd } = await loadData(allePkmn);
-              res.render('pokemonVergelijken', { allePkmnNamen: pkmnNames, allePkmnImg: pkmnImg, allePkmnHp: pkmnHP, allePkmnAtk: pkmnAtk,allePkmnDef: pkmnDef, allePkmnSpAtk: pkmnSpAtk, allePkmnSpDef: pkmnSpDef, allePkmnSpd: pkmnSpd, });
-            }
-          }*/
-        //let databases = await client.db().admin().listDatabases();
-
-        //console.log(databases.databases);
-
-        await client.db("Pokemon").collection("Users").deleteMany({}); //om dublicaties te vermijden elk keer we de script runnen
-        await client.db("Pokemon").collection("GevangenPokemon").deleteMany({}); //om dublicaties te vermijden elk keer we de script runnen
-
-        //await client.db("Pokemon").collection("Users").insert();
-        //await client.db("Pokemon").collection("GevangenPokemon").insert();
-
-    } catch (e) {
-        console.error(e)
-    } finally {
-        await client.close();
-    }
-}
 
 app.listen(app.get('port'), ()=>console.log( '[server] http://localhost:' + app.get('port')));
 export {};
